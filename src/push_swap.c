@@ -6,11 +6,38 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 00:06:23 by asasada          ###   ########.fr       */
+/*   Updated: 2022/11/27 13:50:26 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+void	print_elem(t_elem *elem)
+{
+	ft_printf("%9d <- ", elem->prev->num);
+	ft_printf("%9d -> ", elem->num);
+	ft_printf("%9d\n", elem->next->num);
+	ft_printf("%p <- ", elem->prev);
+	ft_printf("%p -> ", elem);
+	ft_printf("%p\n", elem->next);
+}
+
+void	print_stack(t_elem *stack, bool print_order)
+{
+	ft_printf("=================================\n");
+	while (true)
+	{
+		if (print_order)
+			ft_printf("%d, %d\n", stack->num, stack->pos);
+		else
+			ft_printf("%d\n", stack->num);
+		if (stack->is_end == true)
+			break ;
+		stack = stack->next;
+	}
+}
+
+// =============================================================================
 
 void	free_stack(t_elem *stack)
 {
@@ -37,6 +64,8 @@ void	clean_exit(t_info *info, int exit_code)
 	ft_lstclear(info->ops, free);
 	exit(exit_code);
 }
+
+// =============================================================================
 
 size_t	index_of_stack(t_elem **stack, long num)
 {
@@ -76,23 +105,32 @@ size_t	stacklen(t_elem **stack)
 	return (i);
 }
 
-void	swap(t_info *info, t_elem **stack)
+// =============================================================================
+
+void	swap(t_elem **stack)
 {
 	t_elem	*elem;
 	t_elem	*next;
 
-	(void)info;
+	if (stack == NULL)
+		return ;
+	if (*stack == NULL)
+		return ;
 	elem = *stack;
 	if (elem->is_end || elem->next == NULL)
 		return ;
 	next = elem->next;
-
-	next->prev = elem->prev;
+	if (elem->prev != next)
+		next->prev = elem->prev;
 	elem->prev = next;
-
-	elem->next = next->next;
+	if (next->next != elem)
+		elem->next = next->next;
 	next->next = elem;
-
+	if (next->is_end == true)
+	{
+		next->is_end = false;
+		elem->is_end = true;
+	}
 	*stack = next;
 }
 
@@ -132,6 +170,8 @@ t_elem	*new_elem(long num)
 	return (tmp);
 }
 
+// =============================================================================
+
 void	inputs_to_stack(t_info *info, t_elem **stack, int argc, char **argv)
 {
 	int		i;
@@ -153,6 +193,8 @@ void	inputs_to_stack(t_info *info, t_elem **stack, int argc, char **argv)
 		i++;
 	}
 }
+
+// =============================================================================
 
 void	apply_arr_to_stack(long *arr, t_elem *stack)
 {
@@ -222,15 +264,53 @@ int	sort_tmp_stack(t_elem *stack)
 	return (0);
 }
 
-void	print_stack(t_elem *stack)
+int	check_duplicates(t_elem	*sorted)
 {
-	while (stack->is_end == false)
+	t_elem	*tmp;
+
+	if (sorted == NULL)
+		return (-1);
+	tmp = sorted;
+	while (tmp->is_end != true)
 	{
-		ft_printf("%d\n", stack->num);
-		stack = stack->next;
+		if (tmp->num == tmp->next->num)
+			return (-1);
+		tmp = tmp->next;
 	}
-	ft_printf("%d\n", stack->num);
+	return (0);
 }
+
+void	map_sorted_to_stack(t_elem *sorted, t_elem *stack, size_t sorted_len)
+{
+	size_t	i;
+	t_elem	*stack_tmp;
+	t_elem	*sorted_tmp;
+
+	if (sorted == NULL || stack == NULL || sorted_len != stacklen(&stack))
+		return ;
+	i = 0;
+	sorted_tmp = sorted;
+	while (i < sorted_len)
+	{
+		stack_tmp = stack;
+		while (true)
+		{
+			if (stack_tmp->num == sorted_tmp->num)
+			{
+				stack_tmp->pos = i;
+				break ;
+			}
+			stack_tmp = stack_tmp->next;
+		}
+		sorted_tmp = sorted_tmp->next;
+		i++;
+	}
+}
+
+// =============================================================================
+
+
+// =============================================================================
 
 int	main(int argc, char **argv)
 {
@@ -239,15 +319,30 @@ int	main(int argc, char **argv)
 	info = (t_info){0};
 	inputs_to_stack(&info, &(info.stack_a), argc, argv);
 	inputs_to_stack(&info, &(info.stack_t), argc, argv);
-	print_stack(info.stack_a);
-	swap(&info, &(info.stack_a));
-	// swap(&info, &(info.stack_a));
-	ft_printf("===\n");
-	print_stack(info.stack_a);
-	ft_printf("===\n");
-	sort_tmp_stack(info.stack_a);
-	print_stack(info.stack_a);
-	// print_stack(info.stack_t);
+	// print_stack(info.stack_a, false);
+	// print_stack(info.stack_t, false);
+	// print_elem(info.stack_a);
+	// print_elem(info.stack_a->next);
+	// swap(&(info.stack_a));
+	// swap(&(info.stack_a->next));
+	// swap(&(info.stack_a));
+	// print_stack(info.stack_a, false);
+	// print_stack(info.stack_t, false);
+
+	sort_tmp_stack(info.stack_t);
+
+	// print_stack(info.stack_a, false);
+	// print_stack(info.stack_t, false);
+	// if (check_duplicates(info.stack_a) == 0)
+	// 	ft_printf("no duplicates\n");
+	// else
+	// 	ft_printf("there are duplicates\n");
+	// print_stack(info.stack_t, true);
+	// print_stack(info.stack_a, true);
+	map_sorted_to_stack(info.stack_t, info.stack_a, stacklen(&(info.stack_t)));
+	// print_stack(info.stack_t, true);
+	// print_stack(info.stack_a, true);
+	// print_stack(info.stack_t, false);
 	//  sort();
 	// print_ops();
 	clean_exit(&info, 0);

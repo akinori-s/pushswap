@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/23 22:35:10 by asasada          ###   ########.fr       */
+/*   Updated: 2022/11/27 12:47:31 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@
 
 typedef struct s_elem
 {
-	void	*prev;
-	void	*next;
-	long	num;
-	bool	need_sort;
-	bool	is_end;
-	int		pos;
-	int		move_b_cost;
+	struct s_elem	*prev;
+	struct s_elem	*next;
+	long			num;
+	bool			need_sort;
+	bool			is_end;
+	int				pos;
+	int				move_b_cost;
 }	t_elem;
 
 typedef struct s_info
