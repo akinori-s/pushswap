@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 16:13:52 by asasada          ###   ########.fr       */
+/*   Updated: 2022/11/27 21:35:55 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -57,7 +57,17 @@ typedef struct s_info
 	long	median;
 	long	max;
 	size_t	stack_t_len;
+	size_t	need_sort_count;
 }	t_info;
+
+typedef struct s_cost
+{
+	size_t	ra;
+	size_t	rb;
+	size_t	rra;
+	size_t	rrb;
+	size_t	cost;
+}	t_cost;
 
 // clean_exit.c
 void	free_stack(t_elem *stack);
@@ -84,9 +94,17 @@ void	rotate_stack(t_elem **stack);
 void	rev_rotate_stack(t_elem **stack);
 
 // printers.c
+void	print_stack_elem(t_elem *stack);
 void	print_elem(t_elem *elem);
 void	print_stack(t_elem *stack, bool extra);
+void	print_best_cost(t_cost *cost);
+void	print_stacks(t_elem *stack_a, t_elem *stack_b, bool extra);
+void	print_calc_cost(t_cost *cost, long num);
+void	print_ops(t_list *lst);
 
+// math_utils.c
+size_t	min_st(size_t a, size_t b);
+size_t	max_st(size_t a, size_t b);
 
 void	swap(t_elem **stack);
 void	elem_add_front(t_elem *new, t_elem **stack);
