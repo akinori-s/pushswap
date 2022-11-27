@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 15:34:52 by asasada          ###   ########.fr       */
+/*   Updated: 2022/11/27 16:02:21 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -22,13 +22,13 @@ void	print_elem(t_elem *elem)
 	ft_printf("%p\n", elem->next);
 }
 
-void	print_stack(t_elem *stack, bool print_order)
+void	print_stack(t_elem *stack, bool extra)
 {
 	ft_printf("=================================\n");
 	while (true)
 	{
-		if (print_order)
-			ft_printf("%d, %d\n", stack->num, stack->pos);
+		if (extra)
+			ft_printf("%d, %d, %d\n", stack->num, stack->pos, stack->need_sort);
 		else
 			ft_printf("%d\n", stack->num);
 		if (stack->is_end == true)
@@ -61,7 +61,8 @@ void	clean_exit(t_info *info, int exit_code)
 		free_stack(info->stack_b);
 	if (info->stack_t != NULL)
 		free_stack(info->stack_t);
-	ft_lstclear(info->ops, free);
+	if (info->ops != NULL)
+		ft_lstclear(&(info->ops), free);
 	exit(exit_code);
 }
 
@@ -103,30 +104,6 @@ size_t	stacklen(t_elem **stack)
 		i++;
 	}
 	return (i);
-}
-
-// =============================================================================
-
-void	inputs_to_stack(t_info *info, t_elem **stack, int argc, char **argv)
-{
-	int		i;
-	int		err;
-	long	num;
-	t_elem	*tmp;
-
-	i = 1;
-	err = 0;
-	while (i < argc)
-	{
-		num = ft_atoi(argv[i]);
-		if (err)
-			clean_exit(info, ERROR);
-		tmp = new_elem(num);
-		if (tmp == NULL)
-			clean_exit(info, ERROR);
-		elem_add_front(tmp, stack);
-		i++;
-	}
 }
 
 // =============================================================================
@@ -215,6 +192,28 @@ int	check_duplicates(t_elem	*sorted)
 	return (0);
 }
 
+void	get_stack_info(t_info *info)
+{
+	size_t	stack_len;
+	size_t	median_index;
+	size_t	i;
+	t_elem	*tmp;
+
+	stack_len = stacklen(&(info->stack_t));
+	median_index = stack_len / 2;
+	i = 0;
+	tmp = info->stack_t;
+	while (i < median_index)
+	{
+		tmp = tmp->next;
+		i++;
+	}
+	info->median = tmp->num;
+	info->min = info->stack_t->num;
+	info->max = info->stack_t->prev->num;
+	info->stack_t_len = stack_len;
+}
+
 void	map_sorted_to_stack(t_elem *sorted, t_elem *stack, size_t sorted_len)
 {
 	size_t	i;
@@ -244,22 +243,37 @@ void	map_sorted_to_stack(t_elem *sorted, t_elem *stack, size_t sorted_len)
 
 // =============================================================================
 
-void	flag_non_increasing_nums(t_elem *stack)
+void	flag_non_increasing_nums(t_info *info, t_elem *stack)
 {
 	t_elem	*tmp;
 	size_t	current_max;
 
 	current_max = 0;
+	tmp = stack;
 	while (true)
 	{
 		if (tmp->pos > current_max)
 			current_max = tmp->pos;
 		if (tmp->pos < current_max)
 			tmp->need_sort = true;
+		if (tmp->pos == info->stack_t_len - 1)
+			current_max = 0;
 		if (tmp->is_end == true)
 			break ;
 		tmp = tmp->next;
 	}
+}
+
+t_elem	*new_elem(long num)
+{
+	t_elem	*tmp;
+
+	tmp = malloc(sizeof(t_elem));
+	if (tmp == NULL)
+		return (NULL);
+	*tmp = (t_elem){0};
+	tmp->num = num;
+	return (tmp);
 }
 
 void	swap(t_elem **stack)
@@ -313,18 +327,6 @@ void	elem_add_front(t_elem *new, t_elem **stack)
 	*stack = new;
 }
 
-t_elem	*new_elem(long num)
-{
-	t_elem	*tmp;
-
-	tmp = malloc(sizeof(t_elem));
-	if (tmp == NULL)
-		return (NULL);
-	*tmp = (t_elem){0};
-	tmp->num = num;
-	return (tmp);
-}
-
 t_elem	*pop_elem(t_elem **stack)
 {
 	t_elem	*prev;
@@ -345,7 +347,7 @@ t_elem	*pop_elem(t_elem **stack)
 	if (elem->is_end != true)
 		*stack = next;
 	else
-		*stack == NULL;
+		*stack = NULL;
 	elem->is_end = false;
 	return (elem);
 }
@@ -353,9 +355,9 @@ t_elem	*pop_elem(t_elem **stack)
 void	rotate_stack(t_elem **stack)
 {
 	if (stack == NULL)
-		return (NULL);
+		return ;
 	if (*stack == NULL)
-		return (NULL);
+		return ;
 	(*stack)->prev->is_end = false;
 	(*stack)->is_end = true;
 	*stack = (*stack)->next;
@@ -364,9 +366,9 @@ void	rotate_stack(t_elem **stack)
 void	rev_rotate_stack(t_elem **stack)
 {
 	if (stack == NULL)
-		return (NULL);
+		return ;
 	if (*stack == NULL)
-		return (NULL);
+		return ;
 	(*stack)->prev->is_end = false;
 	(*stack)->prev->prev->is_end = true;
 	*stack = (*stack)->prev;
@@ -394,6 +396,30 @@ int	insert_op_to_list(t_list **list, int op)
 
 // =============================================================================
 
+void	inputs_to_stack(t_info *info, t_elem **stack, int argc, char **argv)
+{
+	int		i;
+	int		err;
+	long	num;
+	t_elem	*tmp;
+
+	i = 1;
+	err = 0;
+	while (i < argc)
+	{
+		num = ft_atoi(argv[i]);
+		if (err)
+			clean_exit(info, ERROR);
+		tmp = new_elem(num);
+		if (tmp == NULL)
+			clean_exit(info, ERROR);
+		elem_add_front(tmp, stack);
+		i++;
+	}
+}
+
+// =============================================================================
+
 int	main(int argc, char **argv)
 {
 	t_info	info;
@@ -415,15 +441,18 @@ int	main(int argc, char **argv)
 
 	// print_stack(info.stack_a, false);
 	// print_stack(info.stack_t, false);
-	// if (check_duplicates(info.stack_a) == 0)
-	// 	ft_printf("no duplicates\n");
-	// else
-	// 	ft_printf("there are duplicates\n");
-	// print_stack(info.stack_t, true);
-	// print_stack(info.stack_a, true);
+	if (check_duplicates(info.stack_a) == 0)
+		ft_printf("no duplicates\n");
+	else
+		ft_printf("there are duplicates\n");
+	get_stack_info(&info);
+	ft_printf("%d, %d, %d\n", info.min, info.max, info.median);
+	print_stack(info.stack_t, true);
+	print_stack(info.stack_a, true);
 	map_sorted_to_stack(info.stack_t, info.stack_a, stacklen(&(info.stack_t)));
-	// print_stack(info.stack_t, true);
-	// print_stack(info.stack_a, true);
+	flag_non_increasing_nums(&info, info.stack_a);
+	print_stack(info.stack_t, true);
+	print_stack(info.stack_a, true);
 	// print_stack(info.stack_t, false);
 	//  sort();
 	// print_ops();

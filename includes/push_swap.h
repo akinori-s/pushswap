@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 14:45:40 by asasada          ###   ########.fr       */
+/*   Updated: 2022/11/27 15:59:51 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ typedef struct s_elem
 	long			num;
 	bool			need_sort;
 	bool			is_end;
-	int				pos;
+	size_t			pos;
 	int				move_b_cost;
 }	t_elem;
 
@@ -51,10 +51,34 @@ typedef struct s_info
 	t_elem	*stack_a;
 	t_elem	*stack_b;
 	t_elem	*stack_t;
-	t_list	**ops;
-	int		a_len;
-	int		b_len;
-
+	t_list	*ops;
+	
+	long	min;
+	long	median;
+	long	max;
+	size_t	stack_t_len;
 }	t_info;
+
+void	clean_exit(t_info *info, int exit_code);
+
+
+void	swap(t_elem **stack);
+void	elem_add_front(t_elem *new, t_elem **stack);
+t_elem	*pop_elem(t_elem **stack);
+void	rotate_stack(t_elem **stack);
+void	rev_rotate_stack(t_elem **stack);
+int	insert_op_to_list(t_list **list, int op);
+
+
+void	op_sa(t_info *info);
+void	op_sb(t_info *info);
+void	op_pa(t_info *info);
+void	op_pb(t_info *info);
+void	op_ra(t_info *info);
+void	op_rb(t_info *info);
+void	op_rra(t_info *info);
+void	op_rrb(t_info *info);
+
+
 
 #endif
