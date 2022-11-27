@@ -12,7 +12,12 @@
 
 SRCS_DIR	:= src/
 SRCS	:= push_swap.c \
-			ops.c
+			ops.c \
+			clean_exit.c \
+			stack_utils.c \
+			stack_ops.c \
+			prep_stack.c \
+			printers.c
 
 SRCS	:= $(addprefix $(SRCS_DIR), $(SRCS))
 OBJS	:= ${SRCS:.c=.o}
