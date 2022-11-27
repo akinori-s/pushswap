@@ -11,7 +11,8 @@
 # **************************************************************************** #
 
 SRCS_DIR	:= src/
-SRCS	:= push_swap.c
+SRCS	:= push_swap.c \
+			ops.c
 
 SRCS	:= $(addprefix $(SRCS_DIR), $(SRCS))
 OBJS	:= ${SRCS:.c=.o}

@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 12:47:31 by asasada          ###   ########.fr       */
+/*   Updated: 2022/11/27 14:45:40 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,21 @@
 # include "ft_printf.h"
 
 # define ERROR -1
+
+# define OP_SA 1
+# define OP_SB 2
+# define OP_SS 3
+
+# define OP_PA 4
+# define OP_PB 5
+
+# define OP_RA 6
+# define OP_RB 7
+# define OP_RR 8
+
+# define OP_RRA 9
+# define OP_RRB 10
+# define OP_RRR 11
 
 typedef struct s_elem
 {

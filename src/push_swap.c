@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 13:50:26 by asasada          ###   ########.fr       */
+/*   Updated: 2022/11/27 15:34:52 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -103,71 +103,6 @@ size_t	stacklen(t_elem **stack)
 		i++;
 	}
 	return (i);
-}
-
-// =============================================================================
-
-void	swap(t_elem **stack)
-{
-	t_elem	*elem;
-	t_elem	*next;
-
-	if (stack == NULL)
-		return ;
-	if (*stack == NULL)
-		return ;
-	elem = *stack;
-	if (elem->is_end || elem->next == NULL)
-		return ;
-	next = elem->next;
-	if (elem->prev != next)
-		next->prev = elem->prev;
-	elem->prev = next;
-	if (next->next != elem)
-		elem->next = next->next;
-	next->next = elem;
-	if (next->is_end == true)
-	{
-		next->is_end = false;
-		elem->is_end = true;
-	}
-	*stack = next;
-}
-
-void	elem_add_front(t_elem *new, t_elem **stack)
-{
-	t_elem	*first;
-	t_elem	*last;
-
-	if (new == NULL || stack == NULL)
-		return ;
-	if (*stack == NULL)
-	{
-		*stack = new;
-		new->next = new;
-		new->prev = new;
-		new->is_end = true;
-		return ;
-	}
-	first = *stack;
-	last = first->prev;
-	new->prev = last;
-	new->next = first;
-	first->prev = new;
-	last->next = new;
-	*stack = new;
-}
-
-t_elem	*new_elem(long num)
-{
-	t_elem	*tmp;
-
-	tmp = malloc(sizeof(t_elem));
-	if (tmp == NULL)
-		return (NULL);
-	*tmp = (t_elem){0};
-	tmp->num = num;
-	return (tmp);
 }
 
 // =============================================================================
@@ -309,6 +244,153 @@ void	map_sorted_to_stack(t_elem *sorted, t_elem *stack, size_t sorted_len)
 
 // =============================================================================
 
+void	flag_non_increasing_nums(t_elem *stack)
+{
+	t_elem	*tmp;
+	size_t	current_max;
+
+	current_max = 0;
+	while (true)
+	{
+		if (tmp->pos > current_max)
+			current_max = tmp->pos;
+		if (tmp->pos < current_max)
+			tmp->need_sort = true;
+		if (tmp->is_end == true)
+			break ;
+		tmp = tmp->next;
+	}
+}
+
+void	swap(t_elem **stack)
+{
+	t_elem	*elem;
+	t_elem	*next;
+
+	if (stack == NULL)
+		return ;
+	if (*stack == NULL)
+		return ;
+	elem = *stack;
+	if (elem->is_end || elem->next == NULL)
+		return ;
+	next = elem->next;
+	if (elem->prev != next)
+		next->prev = elem->prev;
+	elem->prev = next;
+	if (next->next != elem)
+		elem->next = next->next;
+	next->next = elem;
+	if (next->is_end == true)
+	{
+		next->is_end = false;
+		elem->is_end = true;
+	}
+	*stack = next;
+}
+
+void	elem_add_front(t_elem *new, t_elem **stack)
+{
+	t_elem	*first;
+	t_elem	*last;
+
+	if (new == NULL || stack == NULL)
+		return ;
+	if (*stack == NULL)
+	{
+		*stack = new;
+		new->next = new;
+		new->prev = new;
+		new->is_end = true;
+		return ;
+	}
+	first = *stack;
+	last = first->prev;
+	new->prev = last;
+	new->next = first;
+	first->prev = new;
+	last->next = new;
+	*stack = new;
+}
+
+t_elem	*new_elem(long num)
+{
+	t_elem	*tmp;
+
+	tmp = malloc(sizeof(t_elem));
+	if (tmp == NULL)
+		return (NULL);
+	*tmp = (t_elem){0};
+	tmp->num = num;
+	return (tmp);
+}
+
+t_elem	*pop_elem(t_elem **stack)
+{
+	t_elem	*prev;
+	t_elem	*next;
+	t_elem	*elem;
+
+	if (stack == NULL)
+		return (NULL);
+	if (*stack == NULL)
+		return (NULL);
+	elem = *stack;
+	prev = elem->prev;
+	next = elem->next;
+
+	prev->next = next;
+	next->prev = prev;
+
+	if (elem->is_end != true)
+		*stack = next;
+	else
+		*stack == NULL;
+	elem->is_end = false;
+	return (elem);
+}
+
+void	rotate_stack(t_elem **stack)
+{
+	if (stack == NULL)
+		return (NULL);
+	if (*stack == NULL)
+		return (NULL);
+	(*stack)->prev->is_end = false;
+	(*stack)->is_end = true;
+	*stack = (*stack)->next;
+}
+
+void	rev_rotate_stack(t_elem **stack)
+{
+	if (stack == NULL)
+		return (NULL);
+	if (*stack == NULL)
+		return (NULL);
+	(*stack)->prev->is_end = false;
+	(*stack)->prev->prev->is_end = true;
+	*stack = (*stack)->prev;
+}
+
+int	insert_op_to_list(t_list **list, int op)
+{
+	int		*ptr;
+	t_list	*new;
+
+	ptr = malloc(sizeof(int));
+	if (ptr == NULL)
+		return (-1);
+	*ptr = op;
+	new = ft_lstnew(ptr);
+	if (new == NULL)
+	{
+		free(ptr);
+		ptr = NULL;
+		return (-1);
+	}
+	ft_lstadd_back(list, new);
+	return (0);
+}
 
 // =============================================================================
 
