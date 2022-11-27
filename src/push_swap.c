@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 22:14:44 by asasada          ###   ########.fr       */
+/*   Updated: 2022/11/27 22:19:59 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -187,7 +187,7 @@ size_t	calc_dest_index(t_elem **to, long num)
 		ft_printf("a\n");
 		if (index_of_stack(to, stackmin(*to)) == 0)
 			return (0);
-		return (index_of_stack(to, stackmin(*to)) - 1);
+		return (index_of_stack(to, stackmin(*to)));
 	}
 	if (num > stackmax(*to))
 	{
@@ -393,7 +393,9 @@ int	main(int argc, char **argv)
 
 	map_sorted_to_stack(info.stack_t, info.stack_a, stacklen(&(info.stack_t)));
 	op_pb(&info);
+	info.stack_b->need_sort = true;
 	op_pb(&info);
+	info.stack_b->need_sort = true;
 	flag_non_increasing_nums(&info, info.stack_a);
 
 	print_stack(info.stack_a, true);
