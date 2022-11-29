@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 22:19:59 by asasada          ###   ########.fr       */
+/*   Updated: 2022/11/28 21:20:10 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -177,7 +177,7 @@ long	stackmin(t_elem *stack)
 	return (min);
 }
 
-size_t	calc_dest_index(t_elem **to, long num)
+size_t	calc_dest_index_old(t_elem **to, long num)
 {
 	t_elem	*tmp;
 	size_t	index;
@@ -209,16 +209,38 @@ size_t	calc_dest_index(t_elem **to, long num)
 	return (index);
 }
 
-void	calc_cost(t_cost *cost, long num, t_elem **from, t_elem **to)
+size_t	calc_dest_index(t_elem **to, long num)
+{
+	t_elem	*tmp;
+	size_t	min_dist;
+	long	num;
+
+	if (*to == NULL)
+		return (0);
+	tmp = *to;
+	min_dist = stacklen(to);
+	while (true)
+	{
+		if (abs_long(tmp->pos, ))
+		if (tmp->is_end = true)
+			break ;
+		tmp = tmp->next;
+	}
+	return (i);
+}
+
+void	calc_min_cost(t_cost *cost, long num, t_elem **from, t_elem **to)
 {
 	size_t	index;
-	size_t	to_pos;
+	size_t	tmp_pos;
 	t_cost	cost_tmp;
+	t_elem	*target;
 
 	cost_tmp = (t_cost){0};
 	index = index_of_stack(from, num);
 	cost_tmp.ra = index;
 	cost_tmp.rra = stacklen(from) - index;
+	target = elem_at_index(from, num);
 	to_pos = calc_dest_index(to, num);
 	cost_tmp.rb = to_pos;
 	cost_tmp.rrb = stacklen(to) - to_pos;
@@ -238,7 +260,7 @@ void	move_elem(t_info *info, t_elem **from, t_elem **to)
 	while (true)
 	{
 		if (tmp->need_sort == true)
-			calc_cost(&cost, tmp->num, from, to);
+			calc_min_cost(&cost, tmp->num, from, to);
 		if (tmp->is_end == true)
 			break;
 		tmp = tmp->next;
@@ -291,7 +313,7 @@ void	move_elem_b(t_info *info, t_elem **from, t_elem **to)
 	while (true)
 	{
 		if (tmp->need_sort == true)
-			calc_cost(&cost, tmp->num, from, to);
+			calc_min_cost(&cost, tmp->num, from, to);
 		if (tmp->is_end == true)
 			break;
 		tmp = tmp->next;
@@ -352,7 +374,7 @@ void	push_n_swap(t_info *info)
 
 // =============================================================================
 
-void	inputs_to(t_info *info, t_elem **stack, int argc, char **argv)
+void	inputs_to_stack(t_info *info, t_elem **stack, int argc, char **argv)
 {
 	int		i;
 	int		err;
@@ -381,8 +403,8 @@ int	main(int argc, char **argv)
 	t_info	info;
 
 	info = (t_info){0};
-	inputs_to(&info, &(info.stack_a), argc, argv);
-	inputs_to(&info, &(info.stack_t), argc, argv);
+	inputs_to_stack(&info, &(info.stack_a), argc, argv);
+	inputs_to_stack(&info, &(info.stack_t), argc, argv);
 
 	sort_tmp_stack(info.stack_t);
 	if (check_duplicates(info.stack_a) == 0)
