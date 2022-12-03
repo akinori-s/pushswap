@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:06:04 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/28 21:20:35 by asasada          ###   ########.fr       */
+/*   Updated: 2022/11/30 22:50:22 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -55,7 +55,7 @@ t_elem	*elem_at_index(t_elem **stack, size_t index)
 		return (0);
 	i = 0;
 	tmp = *stack;
-	while (true)
+	while (i < index - 1)
 	{
 		tmp = tmp->next;
 		i++;

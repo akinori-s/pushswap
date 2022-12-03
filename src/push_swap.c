@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/28 21:20:10 by asasada          ###   ########.fr       */
+/*   Updated: 2022/11/30 23:26:32 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -209,43 +209,128 @@ size_t	calc_dest_index_old(t_elem **to, long num)
 	return (index);
 }
 
-size_t	calc_dest_index(t_elem **to, long num)
+long	abs_long(long a)
+{
+	if (a == LONG_MIN)
+		return (0);
+	if (a < 0)
+		return (-a);
+	return (a);
+}
+
+long	min_long(long a, long b)
+{
+	if (a > b)
+		return (b);
+	return (a);
+}
+
+long	max_long(long a, long b)
+{
+	if (a < b)
+		return (b);
+	return (a);
+}
+
+long	calc_pos_smaller(t_elem **to, t_elem *elem)
 {
 	t_elem	*tmp;
-	size_t	min_dist;
-	long	num;
+	size_t	i;
+	long	min_dist;
+	long	min_dist_pos;
 
 	if (*to == NULL)
 		return (0);
 	tmp = *to;
 	min_dist = stacklen(to);
+	i = 0;
+	min_dist_pos = 0;
 	while (true)
 	{
-		if (abs_long(tmp->pos, ))
-		if (tmp->is_end = true)
+		if (tmp->pos < elem->pos && abs_long(tmp->pos - elem->pos) < min_dist)
+		{
+			min_dist = tmp->pos - elem->pos;
+			min_dist_pos = i;
+		}
+		if (tmp->is_end == true)
 			break ;
 		tmp = tmp->next;
+		i += 1;
 	}
-	return (i);
+	return (min_dist_pos);
 }
 
-void	calc_min_cost(t_cost *cost, long num, t_elem **from, t_elem **to)
+long	calc_pos_bigger(t_elem **to, t_elem *elem)
+{
+	t_elem	*tmp;
+	size_t	i;
+	long	min_dist;
+	long	min_dist_pos;
+
+	if (*to == NULL)
+		return (0);
+	tmp = *to;
+	min_dist = abs_long(tmp->pos - elem->pos);
+	i = 0;
+	min_dist_pos = 0;
+	while (true)
+	{
+		if (tmp->pos > elem->pos && abs_long(tmp->pos - elem->pos) < min_dist)
+		{
+			min_dist = elem->pos - tmp->pos;
+			min_dist_pos = i;
+		}
+		if (tmp->is_end == true)
+			break ;
+		tmp = tmp->next;
+		i += 1;
+	}
+	return (min_dist_pos);
+}
+
+size_t	calc_dest_index(t_elem **to, t_elem *elem)
+{
+	return (max_long(calc_pos_bigger(to, elem), calc_pos_smaller(to, elem)));
+	// t_elem	*tmp;
+	// size_t	i;
+	// long	min_dist;
+	// long	min_dist_pos;
+
+	// if (*to == NULL)
+	// 	return (0);
+	// tmp = *to;
+	// min_dist = stacklen(to);
+	// i = 0;
+	// while (true)
+	// {
+	// 	if (tmp->pos < elem->pos && min_long(tmp->pos, elem->pos) < min_dist)
+	// 	{
+	// 		min_dist = tmp->pos - elem->pos;
+	// 		min_dist_pos = i;
+	// 	}
+	// 	if (tmp->is_end = true)
+	// 		break ;
+	// 	tmp = tmp->next;
+	// 	i += 1;
+	// }
+	// return (max_long(min_dist_pos, 0);
+}
+
+void	calc_cost(t_cost *cost, t_elem *elem, t_elem **from, t_elem **to)
 {
 	size_t	index;
-	size_t	tmp_pos;
+	size_t	to_pos;
 	t_cost	cost_tmp;
-	t_elem	*target;
 
 	cost_tmp = (t_cost){0};
-	index = index_of_stack(from, num);
+	index = index_of_stack(from, elem->num);
 	cost_tmp.ra = index;
 	cost_tmp.rra = stacklen(from) - index;
-	target = elem_at_index(from, num);
-	to_pos = calc_dest_index(to, num);
+	to_pos = calc_dest_index(to, elem);
 	cost_tmp.rb = to_pos;
 	cost_tmp.rrb = stacklen(to) - to_pos;
 	cost_tmp.cost = calc_min_cost(&cost_tmp);
-	// print_calc_cost(&cost_tmp, num);
+	// print_calc_cost(&cost_tmp, elem->num);
 	if (cost_tmp.cost < cost->cost || cost->cost == 0)
 		copy_cost(cost, &cost_tmp);
 }
@@ -260,7 +345,7 @@ void	move_elem(t_info *info, t_elem **from, t_elem **to)
 	while (true)
 	{
 		if (tmp->need_sort == true)
-			calc_min_cost(&cost, tmp->num, from, to);
+			calc_cost(&cost, tmp, from, to);
 		if (tmp->is_end == true)
 			break;
 		tmp = tmp->next;
@@ -302,7 +387,6 @@ void	do_move_elem_b(t_info *info, t_cost *cost)
 	op_pa(info);
 }
 
-
 void	move_elem_b(t_info *info, t_elem **from, t_elem **to)
 {
 	t_elem	*tmp;
@@ -313,7 +397,7 @@ void	move_elem_b(t_info *info, t_elem **from, t_elem **to)
 	while (true)
 	{
 		if (tmp->need_sort == true)
-			calc_min_cost(&cost, tmp->num, from, to);
+			calc_cost(&cost, tmp, from, to);
 		if (tmp->is_end == true)
 			break;
 		tmp = tmp->next;
