@@ -18,7 +18,8 @@ SRCS	:= push_swap.c \
 			stack_ops.c \
 			prep_stack.c \
 			math_utils.c \
-			printers.c
+			printers.c \
+			cost.c
 
 SRCS	:= $(addprefix $(SRCS_DIR), $(SRCS))
 OBJS	:= ${SRCS:.c=.o}

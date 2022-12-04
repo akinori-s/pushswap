@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   printers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
+/*   By: asasada <asasada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:59 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 21:20:18 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/04 18:08:28 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -72,11 +72,17 @@ void	print_stacks(t_elem *stack_a, t_elem *stack_b, bool extra)
 		else
 		{
 			if (a)
-				ft_printf("%14d", stack_a->num);
+			{
+				ft_printf("%7d", stack_a->pos);
+				ft_printf("%7d", stack_a->num);
+			}
 			else
 				ft_printf("              ");
 			if (b)
-				ft_printf(" %14d\n", stack_b->num);
+			{
+				ft_printf(" %7d", stack_b->pos);
+				ft_printf(" %7d\n", stack_b->num);
+			}
 			else
 				ft_printf("\n");
 		}
@@ -103,16 +109,16 @@ void	print_best_cost(t_cost *cost)
 {
 	ft_printf("==========best cost============\n");
 	ft_printf("ra: %5d, rra: %5d\n", cost->ra, cost->rra);
-	ft_printf("rb: %5d, rrb: %5d\n", cost->rb, cost->rb);
+	ft_printf("rb: %5d, rrb: %5d\n", cost->rb, cost->rrb);
 	ft_printf("cost: %d\n", cost->cost);
 }
 
 void	print_calc_cost(t_cost *cost, long num)
 {
 	ft_printf("======================\n");
-	ft_printf("num: %d\n", num);
+	ft_printf("num: %5d, cost: %5d\n", num, cost->cost);
 	ft_printf("ra: %5d, rra: %5d\n", cost->ra, cost->rra);
-	ft_printf("rb: %5d, rrb: %5d\n", cost->rb, cost->rb);
+	ft_printf("rb: %5d, rrb: %5d\n", cost->rb, cost->rrb);
 }
 
 void	print_ops(t_list *lst)

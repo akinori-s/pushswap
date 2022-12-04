@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
+/*   By: asasada <asasada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/30 23:26:32 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/04 19:01:35 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -33,6 +33,7 @@ void	get_stack_info(t_info *info)
 	info->median = tmp->num;
 	info->min = info->stack_t->num;
 	info->max = info->stack_t->prev->num;
+	info->max_pos = info->stack_t->prev->pos;
 	info->stack_t_len = stack_len;
 }
 
@@ -40,20 +41,27 @@ void	flag_non_increasing_nums(t_info *info, t_elem *stack)
 {
 	t_elem	*tmp;
 	size_t	current_max;
+	size_t	current_min;
 
 	current_max = 0;
+	current_min = info->max;
 	tmp = stack;
 	while (true)
 	{
 		if (tmp->pos > current_max)
 			current_max = tmp->pos;
-		if (tmp->pos < current_max)
+		if (tmp->pos < current_min)
+			current_min = tmp->pos;
+		if (info->max_pos == current_max && tmp->pos < current_min)
 		{
 			tmp->need_sort = true;
 			info->need_sort_count += 1;
 		}
-		if (tmp->pos == info->stack_t_len - 1)
-			current_max = 0;
+		else if (tmp->pos < current_max)
+		{
+			tmp->need_sort = true;
+			info->need_sort_count += 1;
+		}
 		if (tmp->is_end == true)
 			break ;
 		tmp = tmp->next;
@@ -61,85 +69,6 @@ void	flag_non_increasing_nums(t_info *info, t_elem *stack)
 }
 
 // =============================================================================
-
-void	do_move_elem(t_info *info, t_cost *cost)
-{
-	size_t	i;
-
-	i = 0;
-	while (i < cost->ra)
-	{
-		op_ra(info);
-		i++;
-	}
-	i = 0;
-	while (i < cost->rb)
-	{
-		op_rb(info);
-		i++;
-	}
-	i = 0;
-	while (i < cost->rra)
-	{
-		op_rra(info);
-		i++;
-	}
-	i = 0;
-	while (i < cost->rrb)
-	{
-		op_rrb(info);
-		i++;
-	}
-	op_pb(info);
-}
-
-
-void	calc_min_cost_tool(t_cost *c)
-{
-	if (c->ra + c->rrb < c->rra + c->rb)
-	{
-		c->rra = 0;
-		c->rb = 0;
-	}
-	else if (c->ra + c->rrb > c->rra + c->rb)
-	{
-		c->ra = 0;
-		c->rrb = 0;
-	}
-}
-
-size_t	calc_min_cost(t_cost *c)
-{
-	size_t	cost_indiv;
-	size_t	cost_r;
-	size_t	cost_rr;
-
-	cost_indiv = min_st(c->ra, c->rra) + min_st(c->rb, c->rrb);
-	cost_r = max_st(c->ra, c->rb);
-	cost_rr = max_st(c->rra, c->rrb);
-	if (cost_r == min_st(cost_indiv, min_st(cost_r, cost_rr)))
-	{
-		c->rra = 0;
-		c->rrb = 0;
-	}
-	else if (cost_rr == min_st(cost_indiv, min_st(cost_r, cost_rr)))
-	{
-		c->ra = 0;
-		c->rb = 0;
-	}
-	else
-		calc_min_cost_tool(c);
-	return (min_st(cost_indiv, min_st(cost_r, cost_rr)));
-}
-
-void	copy_cost(t_cost *to, t_cost *from)
-{
-	to->cost = from->cost;
-	to->ra = from->ra;
-	to->rb = from->rb;
-	to->rra = from->rra;
-	to->rrb = from->rrb;
-}
 
 long	stackmax(t_elem *stack)
 {
@@ -177,60 +106,70 @@ long	stackmin(t_elem *stack)
 	return (min);
 }
 
-size_t	calc_dest_index_old(t_elem **to, long num)
-{
-	t_elem	*tmp;
-	size_t	index;
+// =============================================================================
 
-	if (num < stackmin(*to))
+void	do_move_elem(t_info *info, t_cost *cost)
+{
+	size_t	i;
+
+	i = 0;
+	while (i < cost->ra)
 	{
-		ft_printf("a\n");
-		if (index_of_stack(to, stackmin(*to)) == 0)
-			return (0);
-		return (index_of_stack(to, stackmin(*to)));
+		op_ra(info);
+		i++;
 	}
-	if (num > stackmax(*to))
+	i = 0;
+	while (i < cost->rb)
 	{
-		ft_printf("b\n");
-		if (index_of_stack(to, stackmin(*to)) == stacklen(to))
-			return (0);
-		return (index_of_stack(to, stackmax(*to)) + 1);
+		op_rb(info);
+		i++;
 	}
-		ft_printf("c\n");
-	index = 0;
-	tmp = *to;
-	while (tmp != NULL)
+	i = 0;
+	while (i < cost->rra)
 	{
-		if (tmp->prev->num > num && tmp->num < num)
-			break;
-		tmp = tmp->next;
-		index += 1;
+		op_rra(info);
+		i++;
 	}
-	return (index);
+	i = 0;
+	while (i < cost->rrb)
+	{
+		op_rrb(info);
+		i++;
+	}
+	op_pb(info);
 }
 
-long	abs_long(long a)
-{
-	if (a == LONG_MIN)
-		return (0);
-	if (a < 0)
-		return (-a);
-	return (a);
-}
+// size_t	calc_dest_index(t_elem **to, long num)
+// {
+// 	t_elem	*tmp;
+// 	size_t	index;
 
-long	min_long(long a, long b)
-{
-	if (a > b)
-		return (b);
-	return (a);
-}
-
-long	max_long(long a, long b)
-{
-	if (a < b)
-		return (b);
-	return (a);
-}
+// 	if (num < stackmin(*to))
+// 	{
+// 		ft_printf("a\n");
+// 		if (index_of_stack(to, stackmin(*to)) == 0)
+// 			return (0);
+// 		return (index_of_stack(to, stackmin(*to)));
+// 	}
+// 	if (num > stackmax(*to))
+// 	{
+// 		ft_printf("b\n");
+// 		if (index_of_stack(to, stackmin(*to)) == stacklen(to))
+// 			return (0);
+// 		return (index_of_stack(to, stackmax(*to)) + 1);
+// 	}
+// 		ft_printf("c\n");
+// 	index = 0;
+// 	tmp = *to;
+// 	while (tmp != NULL)
+// 	{
+// 		if (tmp->prev->num > num && tmp->num < num)
+// 			break;
+// 		tmp = tmp->next;
+// 		index += 1;
+// 	}
+// 	return (index);
+// }
 
 long	calc_pos_smaller(t_elem **to, t_elem *elem)
 {
@@ -249,7 +188,7 @@ long	calc_pos_smaller(t_elem **to, t_elem *elem)
 	{
 		if (tmp->pos < elem->pos && abs_long(tmp->pos - elem->pos) < min_dist)
 		{
-			min_dist = tmp->pos - elem->pos;
+			min_dist = elem->pos - tmp->pos;
 			min_dist_pos = i;
 		}
 		if (tmp->is_end == true)
@@ -270,14 +209,16 @@ long	calc_pos_bigger(t_elem **to, t_elem *elem)
 	if (*to == NULL)
 		return (0);
 	tmp = *to;
-	min_dist = abs_long(tmp->pos - elem->pos);
+	min_dist = stacklen(to);
 	i = 0;
 	min_dist_pos = 0;
 	while (true)
 	{
+		ft_printf("a%d, %d\n", min_dist, abs_long(tmp->pos - elem->pos));
+		ft_printf("b%d, %d\n", i, min_dist_pos);
 		if (tmp->pos > elem->pos && abs_long(tmp->pos - elem->pos) < min_dist)
 		{
-			min_dist = elem->pos - tmp->pos;
+			min_dist = tmp->pos - elem->pos;
 			min_dist_pos = i;
 		}
 		if (tmp->is_end == true)
@@ -285,12 +226,19 @@ long	calc_pos_bigger(t_elem **to, t_elem *elem)
 		tmp = tmp->next;
 		i += 1;
 	}
+	min_dist_pos++;
 	return (min_dist_pos);
 }
 
 size_t	calc_dest_index(t_elem **to, t_elem *elem)
 {
-	return (max_long(calc_pos_bigger(to, elem), calc_pos_smaller(to, elem)));
+	long	a;
+	long	b;
+
+	a = calc_pos_bigger(to, elem);
+	b = calc_pos_smaller(to, elem);
+	ft_printf("ab: %d, %d\n", a, b);
+	return (min_long(a, b));
 	// t_elem	*tmp;
 	// size_t	i;
 	// long	min_dist;
@@ -329,8 +277,9 @@ void	calc_cost(t_cost *cost, t_elem *elem, t_elem **from, t_elem **to)
 	to_pos = calc_dest_index(to, elem);
 	cost_tmp.rb = to_pos;
 	cost_tmp.rrb = stacklen(to) - to_pos;
+	print_calc_cost(&cost_tmp, elem->num);
 	cost_tmp.cost = calc_min_cost(&cost_tmp);
-	// print_calc_cost(&cost_tmp, elem->num);
+	print_calc_cost(&cost_tmp, elem->num);
 	if (cost_tmp.cost < cost->cost || cost->cost == 0)
 		copy_cost(cost, &cost_tmp);
 }

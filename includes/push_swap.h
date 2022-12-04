@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
+/*   By: asasada <asasada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 21:35:55 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/04 17:37:59 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -56,6 +56,7 @@ typedef struct s_info
 	long	min;
 	long	median;
 	long	max;
+	size_t	max_pos;
 	size_t	stack_t_len;
 	size_t	need_sort_count;
 }	t_info;
@@ -105,7 +106,11 @@ void	print_ops(t_list *lst);
 // math_utils.c
 size_t	min_st(size_t a, size_t b);
 size_t	max_st(size_t a, size_t b);
+long	abs_long(long a);
+long	min_long(long a, long b);
+long	max_long(long a, long b);
 
+// stack_ops.c
 void	swap(t_elem **stack);
 void	elem_add_front(t_elem *new, t_elem **stack);
 t_elem	*pop_elem(t_elem **stack);
@@ -113,6 +118,10 @@ void	rotate_stack(t_elem **stack);
 void	rev_rotate_stack(t_elem **stack);
 int	insert_op_to_list(t_list **list, int op);
 
+// cost.c
+void	calc_min_cost_tool(t_cost *c);
+size_t	calc_min_cost(t_cost *c);
+void	copy_cost(t_cost *to, t_cost *from);
 
 void	op_sa(t_info *info);
 void	op_sb(t_info *info);

@@ -25,3 +25,27 @@ size_t	max_st(size_t a, size_t b)
 		return (b);
 	return (a);
 }
+
+
+long	abs_long(long a)
+{
+	if (a == LONG_MIN)
+		return (0);
+	if (a < 0)
+		return (-a);
+	return (a);
+}
+
+long	min_long(long a, long b)
+{
+	if (a > b)
+		return (b);
+	return (a);
+}
+
+long	max_long(long a, long b)
+{
+	if (a < b)
+		return (b);
+	return (a);
+}
