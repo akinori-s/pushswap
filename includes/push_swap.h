@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asasada <asasada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/04 17:37:59 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/06 18:03:10 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,8 +77,8 @@ void	clean_exit(t_info *info, int exit_code);
 // stack_utils.c
 int	insert_op_to_list(t_list **list, int op);
 t_elem	*new_elem(long num);
-size_t	index_of_stack(t_elem **stack, long num);
-size_t	stacklen(t_elem **stack);
+size_t	index_of_stack(t_elem *stack, long num);
+size_t	stacklen(t_elem *stack);
 
 // prep_stack.c
 void	apply_arr_to_stack(long *arr, t_elem *stack);

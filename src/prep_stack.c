@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:12 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 16:08:31 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/06 18:08:58 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -60,7 +60,7 @@ int	sort_tmp_stack(t_elem *stack)
 	long	*arr;
 	t_elem	*tmp;
 
-	len = stacklen(&stack);
+	len = stacklen(stack);
 	arr = malloc(sizeof(long) * len);
 	if (arr == NULL)
 		return (-1);
@@ -102,7 +102,7 @@ void	map_sorted_to_stack(t_elem *sorted, t_elem *stack, size_t sorted_len)
 	t_elem	*stack_tmp;
 	t_elem	*sorted_tmp;
 
-	if (sorted == NULL || stack == NULL || sorted_len != stacklen(&stack))
+	if (sorted == NULL || stack == NULL || sorted_len != stacklen(stack))
 		return ;
 	i = 0;
 	sorted_tmp = sorted;

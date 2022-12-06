@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:06:04 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/30 22:50:22 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/06 18:08:30 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -63,17 +63,15 @@ t_elem	*elem_at_index(t_elem **stack, size_t index)
 	return (tmp);
 }
 
-size_t	index_of_stack(t_elem **stack, long num)
+size_t	index_of_stack(t_elem *stack, long num)
 {
 	size_t	i;
 	t_elem	*tmp;
 
 	if (stack == NULL)
 		return (0);
-	if (*stack == NULL)
-		return (0);
 	i = 0;
-	tmp = *stack;
+	tmp = stack;
 	while (tmp->num != num && tmp->next != NULL)
 	{
 		tmp = tmp->next;
@@ -82,17 +80,15 @@ size_t	index_of_stack(t_elem **stack, long num)
 	return (i);
 }
 
-size_t	stacklen(t_elem **stack)
+size_t	stacklen(t_elem *stack)
 {
 	size_t	i;
 	t_elem	*tmp;
 
 	if (stack == NULL)
 		return (0);
-	if (*stack == NULL)
-		return (0);
 	i = 1;
-	tmp = *stack;
+	tmp = stack;
 	while (tmp->is_end != true && tmp->next != NULL)
 	{
 		tmp = tmp->next;

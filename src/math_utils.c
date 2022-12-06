@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 21:28:34 by asasada           #+#    #+#             */
-/*   Updated: 2022/11/27 21:36:21 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/06 20:19:39 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,7 +25,6 @@ size_t	max_st(size_t a, size_t b)
 		return (b);
 	return (a);
 }
-
 
 long	abs_long(long a)
 {

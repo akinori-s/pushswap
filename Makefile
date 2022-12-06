@@ -78,7 +78,7 @@ re:		fclean all
 
 do:		all clean
 
-norm:s
+norm:
 	norminette src includes libft bonus
 
 .PHONY:	all clean fclean re bonus do norm
