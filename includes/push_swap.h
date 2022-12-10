@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/10 21:38:29 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/10 22:13:26 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -89,6 +89,7 @@ void	map_sorted_to_stack(t_elem *sorted, t_elem *stack, size_t sorted_len);
 
 // stack_ops.c
 void	swap(t_elem **stack);
+void	elem_add_back(t_elem *new, t_elem **stack);
 void	elem_add_front(t_elem *new, t_elem **stack);
 t_elem	*pop_elem(t_elem **stack);
 void	rotate_stack(t_elem **stack);

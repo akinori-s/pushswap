@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:59 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/10 21:38:15 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/10 22:04:03 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -136,25 +136,25 @@ void	print_ops(t_list *lst, bool debug)
 			ft_printf("%p   ", tmp);	// TODO remove this before submitting.
 		}
 		if (*(int *)(tmp->content) == OP_SA)
-			ft_printf("SA\n");
+			ft_printf("sa\n");
 		if (*(int *)(tmp->content) == OP_SB)
-			ft_printf("SB\n");
+			ft_printf("sb\n");
 		if (*(int *)(tmp->content) == OP_PA)
-			ft_printf("PA\n");
+			ft_printf("pa\n");
 		if (*(int *)(tmp->content) == OP_PB)
-			ft_printf("PB\n");
+			ft_printf("pb\n");
 		if (*(int *)(tmp->content) == OP_RA)
-			ft_printf("RA\n");
+			ft_printf("ra\n");
 		if (*(int *)(tmp->content) == OP_RB)
-			ft_printf("RB\n");
+			ft_printf("rb\n");
 		if (*(int *)(tmp->content) == OP_RR)
-			ft_printf("RR\n");
+			ft_printf("rr\n");
 		if (*(int *)(tmp->content) == OP_RRA)
-			ft_printf("RRA\n");
+			ft_printf("rra\n");
 		if (*(int *)(tmp->content) == OP_RRB)
-			ft_printf("RRB\n");
+			ft_printf("rrb\n");
 		if (*(int *)(tmp->content) == OP_RRR)
-			ft_printf("RRR\n");
+			ft_printf("rrr\n");
 		tmp = tmp->next;
 	}
 }

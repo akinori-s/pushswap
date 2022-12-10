@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/10 22:01:34 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/10 22:49:09 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -385,7 +385,7 @@ void	inputs_to_stack(t_info *info, t_elem **stack, int argc, char **argv)
 		tmp = new_elem(num);
 		if (tmp == NULL)
 			clean_exit(info, ERROR);
-		elem_add_front(tmp, stack);
+		elem_add_back(tmp, stack);
 		i++;
 	}
 }
@@ -417,6 +417,35 @@ void	shift_list_n_del_last(t_list *lst)
 	to_null->next = NULL;
 }
 
+void	join_rr(t_info *info, size_t i, size_t n)
+{
+	t_list	*tmp;
+	size_t	rra;
+	size_t	rrb;
+
+	tmp = info->ops;
+	rra = 0;
+	while (rra++ < i)
+		tmp = tmp->next;
+	rra = 0;
+	rrb = 0;
+	while ((rra < n || rrb < n) && tmp != NULL)
+	{
+
+		if (*(int*)tmp->content == OP_RRA && rra < n)
+		{
+			*(int*)tmp->content = OP_RRR;
+			rra++;
+		}
+		if (*(int*)tmp->content == OP_RRB && rrb < n)
+		{
+			shift_list_n_del_last(tmp);
+			rrb++;
+		}
+		tmp = tmp->next;
+	}
+}
+
 void	join_r(t_info *info, size_t i, size_t n)
 {
 	t_list	*tmp;
@@ -429,7 +458,7 @@ void	join_r(t_info *info, size_t i, size_t n)
 		tmp = tmp->next;
 	ra = 0;
 	rb = 0;
-	while (ra < n || rb < n)
+	while ((ra < n || rb < n) && tmp != NULL)
 	{
 
 		if (*(int*)tmp->content == OP_RA && ra < n)
@@ -444,6 +473,34 @@ void	join_r(t_info *info, size_t i, size_t n)
 		}
 		tmp = tmp->next;
 	}
+}
+
+int	join_rev_rotates(t_info *info, size_t i, size_t j)
+{
+	t_list	*tmp;
+	size_t	rra;
+	size_t	rrb;
+	size_t	t;
+
+	tmp = info->ops;
+	rra = 0;
+	rrb = 0;
+	t = 0;
+	while (t++ < i)
+		tmp = tmp->next;
+	t = 0;
+	while (t++ < j)
+	{
+		if (*(int*)tmp->content == OP_RRA)
+			rra++;
+		else if (*(int*)tmp->content == OP_RRB)
+			rrb++;
+		tmp = tmp->next;
+	}
+	if (min_st(rra, rrb) == 0)
+		return (0);
+	join_rr(info, i, min_st(rra, rrb));
+	return (1);
 }
 
 int	join_rotates(t_info *info, size_t i, size_t j)
@@ -492,7 +549,7 @@ void	compress_ops2(t_info *info)
 		}
 		if (tmp != NULL)
 		{
-			if (join_rotates(info, i, j) == 1)
+			if (join_rotates(info, i, j) == 1 || join_rev_rotates(info, i, j) == 1)
 			{
 				tmp = info->ops;
 				i = 0;
@@ -531,8 +588,8 @@ int	main(int argc, char **argv)
 	push_n_swap(&info);
 	// compress_ops(&info, ft_lstsize(info.ops));
 	compress_ops2(&info);
-	// print_stack(info.stack_a, true);
-	print_ops(info.ops, false);
+	print_stack(info.stack_a, true);
+	// print_ops(info.ops, false);
 
 	clean_exit(&info, 0);
 	return (0);
