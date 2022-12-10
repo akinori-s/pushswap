@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/10 21:59:31 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/10 22:01:34 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -165,6 +165,7 @@ long	calc_pos_bigger(t_info *info, t_elem *to, t_elem *elem)
 		tmp = tmp->next;
 		i += 1;
 	}
+	min_dist_pos++;
 	return (min_dist_pos);
 }
 
@@ -180,9 +181,9 @@ size_t	calc_dest_index(t_info *info, t_elem *to, t_elem *elem)
 	index_max = index_of_stack(to, max);
 	index_min = index_of_stack(to, min);
 	if (elem->num > max)
-		return (index_max + 1);
+		return (index_max);
 	if (elem->num < min)
-		return (index_min);
+		return (index_min + 1);
 	return (calc_pos_bigger(info, to, elem));
 }
 
@@ -281,7 +282,6 @@ long	calc_pos_bigger_b(t_info *info, t_elem *to, t_elem *elem)
 		tmp = tmp->next;
 		i += 1;
 	}
-	min_dist_pos++;
 	return (min_dist_pos);
 }
 
@@ -297,9 +297,9 @@ size_t	calc_dest_index_b(t_info *info, t_elem *to, t_elem *elem)
 	index_max = index_of_stack(to, max);
 	index_min = index_of_stack(to, min);
 	if (elem->num > max)
-		return (index_max);
+		return (index_max + 1);
 	if (elem->num < min)
-		return (index_min + 1);
+		return (index_min);
 	return (calc_pos_bigger_b(info, to, elem));
 }
 
@@ -355,7 +355,7 @@ void	push_n_swap(t_info *info)
 	{
 		move_elem_b(info, info->stack_b);
 	}
-	ra = index_of_stack(info->stack_a, stackmax(info->stack_a));
+	ra = index_of_stack(info->stack_a, stackmin(info->stack_a));
 	rra = stacklen(info->stack_a) - ra;
 	if (ra > rra)
 		while (rra-- > 0)
