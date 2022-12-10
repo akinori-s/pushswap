@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:59 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/10 22:04:03 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/11 00:40:53 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -64,7 +64,7 @@ void	print_stacks(t_elem *stack_a, t_elem *stack_b, bool extra)
 		b = false;
 	ft_printf("================================\n");
 	ft_printf("        A               B\n");
-	ft_printf("================ ===============\n");
+	ft_printf("=================== ===================\n");
 	while (true)
 	{
 		if (extra)
@@ -73,15 +73,15 @@ void	print_stacks(t_elem *stack_a, t_elem *stack_b, bool extra)
 		{
 			if (a)
 			{
-				ft_printf("%7d", stack_a->pos);
-				ft_printf("%7d", stack_a->num);
+				ft_printf("%-6d", stack_a->pos);
+				ft_printf("%13d", stack_a->num);
 			}
 			else
-				ft_printf("              ");
+				ft_printf("%19s", "");
 			if (b)
 			{
-				ft_printf(" %7d", stack_b->pos);
-				ft_printf(" %7d\n", stack_b->num);
+				ft_printf(" %-6d", stack_b->pos);
+				ft_printf(" %13d\n", stack_b->num);
 			}
 			else
 				ft_printf("\n");
