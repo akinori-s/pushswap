@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:59 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/10 18:26:28 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/10 21:38:15 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -121,7 +121,7 @@ void	print_calc_cost(t_cost *cost, long num)
 	ft_printf("rb: %5d, rrb: %5d\n", cost->rb, cost->rrb);
 }
 
-void	print_ops(t_list *lst)
+void	print_ops(t_list *lst, bool debug)
 {
 	t_list	*tmp;
 	size_t	i;
@@ -130,8 +130,11 @@ void	print_ops(t_list *lst)
 	tmp = lst;
 	while (tmp != NULL)
 	{
-		ft_printf("%-5d", i++);	// TODO remove this before submitting.
-		ft_printf("%p   ", tmp);	// TODO remove this before submitting.
+		if (debug)
+		{
+			ft_printf("%-5d", i++);	// TODO remove this before submitting.
+			ft_printf("%p   ", tmp);	// TODO remove this before submitting.
+		}
 		if (*(int *)(tmp->content) == OP_SA)
 			ft_printf("SA\n");
 		if (*(int *)(tmp->content) == OP_SB)

@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/06 18:03:10 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/10 21:38:29 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -101,7 +101,7 @@ void	print_stack(t_elem *stack, bool extra);
 void	print_best_cost(t_cost *cost);
 void	print_stacks(t_elem *stack_a, t_elem *stack_b, bool extra);
 void	print_calc_cost(t_cost *cost, long num);
-void	print_ops(t_list *lst);
+void	print_ops(t_list *lst, bool debug);
 
 // math_utils.c
 size_t	min_st(size_t a, size_t b);
