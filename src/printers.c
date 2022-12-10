@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   printers.c                                         :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asasada <asasada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:59 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/04 18:08:28 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/10 18:26:28 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,10 +124,14 @@ void	print_calc_cost(t_cost *cost, long num)
 void	print_ops(t_list *lst)
 {
 	t_list	*tmp;
+	size_t	i;
 
+	i = 0;
 	tmp = lst;
 	while (tmp != NULL)
 	{
+		ft_printf("%-5d", i++);	// TODO remove this before submitting.
+		ft_printf("%p   ", tmp);	// TODO remove this before submitting.
 		if (*(int *)(tmp->content) == OP_SA)
 			ft_printf("SA\n");
 		if (*(int *)(tmp->content) == OP_SB)
@@ -140,10 +144,14 @@ void	print_ops(t_list *lst)
 			ft_printf("RA\n");
 		if (*(int *)(tmp->content) == OP_RB)
 			ft_printf("RB\n");
+		if (*(int *)(tmp->content) == OP_RR)
+			ft_printf("RR\n");
 		if (*(int *)(tmp->content) == OP_RRA)
 			ft_printf("RRA\n");
 		if (*(int *)(tmp->content) == OP_RRB)
 			ft_printf("RRB\n");
+		if (*(int *)(tmp->content) == OP_RRR)
+			ft_printf("RRR\n");
 		tmp = tmp->next;
 	}
 }

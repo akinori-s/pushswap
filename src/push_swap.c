@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/06 23:06:47 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/10 21:33:05 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -529,64 +529,246 @@ bool	op_is_push_swap(int	op)
 	return (false);
 }
 
-void	remove_n_ops(t_list **prev, size_t n, int op)
-{
-	size_t	i;
-	t_list	*tmp;
+// void	remove_n_ops(t_list **prev, size_t n, int op)
+// {
+// 	size_t	i;
+// 	t_list	*tmp;
 
-	tmp = *prev;
-	i = 0;
-	while (i < n && tmp)
+// 	tmp = *prev;
+// 	i = 0;
+// 	while (i < n && tmp)
+// 	{
+// 		if (*(int*)(tmp->content) == op)
+// 		{
+// 			// ft_printf("%d\n", op);
+// 			// ft_printf("prev: %p\n", *prev);
+// 			// ft_printf("tmp: %p\n", tmp);
+// 			// ft_printf("next: %p\n", tmp->next);
+
+// 			*prev = tmp->next;
+// 			ft_lstdelone(tmp, free);
+// 			ft_printf("removing!!\n");
+// 			tmp = *prev;
+// 			i++;
+
+// 			// ft_printf("prev: %p\n", *prev);
+// 			// ft_printf("tmp: %p\n", tmp);
+// 			// ft_printf("next: %p\n", tmp->next);
+// 		}
+// 		else
+// 		{
+// 			prev = &(tmp->next);
+// 			tmp = tmp->next;
+// 		}	
+// 	}
+// }
+
+// int	insert_n_ops(t_list **prev, size_t n, int op)
+// {
+// 	t_list	*tmp;
+// 	size_t	i;
+
+// 	tmp = NULL;
+// 	i = 0;
+// 	while (i < n)
+// 	{
+// 		if (insert_op_to_list(&tmp, op) == ERROR)
+// 		{
+// 			ft_lstclear(&tmp, free);
+// 			return (ERROR);
+// 		}
+// 		i++;
+// 	}
+// 	ft_lstlast(tmp)->next = *prev;
+// 	*prev = tmp;
+// 	return (0);
+// }
+
+// int	join_r(t_info *info, t_list **prev, size_t len)
+// {
+// 	size_t	ra;
+// 	size_t	rb;
+// 	size_t	i;
+// 	t_list	*tmp;
+// 	int		ret;
+
+// 	ft_printf("join_r\n");
+// 	ft_printf("%p\n", *prev);
+// 	tmp = *prev;
+// 	i = 0;
+// 	ra = 0;
+// 	rb = 0;
+// 	while (i++ < len && tmp != NULL)
+// 	{
+// 		if (*(int*)tmp->content == OP_RA)
+// 			ra++;
+// 		else if (*(int*)tmp->content == OP_RB)
+// 			rb++;
+// 		tmp = tmp->next;
+// 	}
+// 	if (min_st(ra, rb) == 0)
+// 		return (0);
+// 	remove_n_ops(prev, min_st(ra, rb), OP_RA);
+// 	remove_n_ops(prev, min_st(ra, rb), OP_RB);
+// 	ret = insert_n_ops(prev, min_st(ra, rb), OP_RR);
+// 	(void)info;
+// 	return (ret);
+// }
+
+// int	join_rr(t_info *info, t_list **prev, size_t len)
+// {
+// 	size_t	ra;
+// 	size_t	rb;
+// 	size_t	i;
+// 	t_list	*tmp;
+// 	int		ret;
+
+// 	ft_printf("join_rr\n");
+// 	ft_printf("%p\n", *prev);
+// 	tmp = *prev;
+// 	i = 0;
+// 	ra = 0;
+// 	rb = 0;
+// 	while (i++ < len && tmp != NULL)
+// 	{
+// 		if (*(int*)tmp->content == OP_RRA)
+// 			ra++;
+// 		else if (*(int*)tmp->content == OP_RRB)
+// 			rb++;
+// 		tmp = tmp->next;
+// 	}
+// 	if (min_st(ra, rb) == 0)
+// 		return (0);
+// 	remove_n_ops(prev, min_st(ra, rb), OP_RRA);
+// 	remove_n_ops(prev, min_st(ra, rb), OP_RRB);
+// 	ret = insert_n_ops(prev, min_st(ra, rb), OP_RRR);
+// 	(void)info;
+// 	return (ret);
+// }
+
+// void	join_rotates(t_info *info, size_t start, size_t len)
+// {
+// 	size_t	i;
+// 	t_list	*tmp;
+// 	t_list	**prev;
+// 	int		ret;
+
+// 	tmp = info->ops;
+// 	prev = &(info->ops);
+// 	i = 0;
+// 	while (i++ < start)
+// 	{
+// 		prev = &(tmp->next);
+// 		tmp = tmp->next;
+// 	}
+// 	ret = 0;
+// 	ret += join_r(info, prev, len);
+// 	ret += join_rr(info, prev, len);
+// 	if (ret != 0)
+// 		clean_exit(info, ERROR);
+// }
+
+// void	compress_ops(t_info *info, size_t lst_size)
+// {
+// 	size_t	i;
+// 	size_t	j;
+// 	t_list	*tmp;
+
+// 	// ft_printf("%d\n", ft_lstsize(info->ops));
+// 	tmp = info->ops;
+// 	// ft_printf("%p\n", &tmp);
+// 	// ft_printf("%p\n", tmp);
+// 	// ft_printf("%p\n", &(tmp->next));
+// 	i = 0;
+// 	while (i < lst_size && tmp != NULL)
+// 	{
+// 		j = 0;
+// 		while (!op_is_push_swap(*(int*)tmp->content) && tmp != NULL)
+// 		{
+// 			j++;
+// 			tmp = tmp->next;
+// 			if (tmp == NULL)
+// 				break ;
+// 		}
+// 		ft_printf("%d\n", j);
+// 		if (j != 0)
+// 		{
+// 			join_rotates(info, i, j);
+// 			// print_ops(info->ops);
+// 			ft_printf("OYOYO\n");
+// 		}
+// 		else if (tmp != NULL)
+// 		{
+// 			tmp = tmp->next;
+// 			i += j + 1;
+// 		}
+// 	}
+// }
+
+// =============================================================================
+
+void	shift_list_n_del_last(t_list *lst)
+{
+	t_list	*tmp;
+	t_list	*to_null;
+
+	tmp = lst;
+	while (tmp->next != NULL)
 	{
-		if (*(int*)(tmp->content) == op)
-		{
-			*prev = tmp->next;
-			ft_lstdelone(tmp, free);
-			tmp = *prev;
-			i++;
-		}
-		else
-		{
-			tmp = tmp->next;
-			prev = &(tmp->next);
-		}	
+		*(int*)tmp->content = *(int*)tmp->next->content;
+		tmp = tmp->next;
+		if (tmp->next != NULL)
+			if (tmp->next->next == NULL)
+				to_null = tmp;
 	}
+	ft_lstdelone(tmp, free);
+	to_null->next = NULL;
 }
 
-int	insert_n_ops(t_list **prev, size_t n, int op)
+void	join_r(t_info *info, size_t i, size_t n)
 {
 	t_list	*tmp;
-	size_t	i;
-
-	tmp = NULL;
-	i = 0;
-	while (i < n)
-	{
-		if (insert_op_to_list(&tmp, op) == ERROR)
-		{
-			ft_lstclear(&tmp, free);
-			return (ERROR);
-		}
-		i++;
-	}
-	ft_lstlast(tmp)->next = *prev;
-	*prev = tmp;
-	return (0);
-}
-
-int	join_r(t_info *info, t_list **prev, size_t len)
-{
 	size_t	ra;
 	size_t	rb;
-	size_t	i;
-	t_list	*tmp;
-	int		ret;
 
-	tmp = *prev;
-	i = 0;
+	tmp = info->ops;
+	ra = 0;
+	while (ra++ < i)
+		tmp = tmp->next;
 	ra = 0;
 	rb = 0;
-	while (i++ < len && tmp != NULL)
+	while (ra < n || rb < n)
+	{
+
+		if (*(int*)tmp->content == OP_RA && ra < n)
+		{
+			*(int*)tmp->content = OP_RR;
+			ra++;
+		}
+		if (*(int*)tmp->content == OP_RB && rb < n)
+		{
+			shift_list_n_del_last(tmp);
+			rb++;
+		}
+		tmp = tmp->next;
+	}
+}
+
+int	join_rotates(t_info *info, size_t i, size_t j)
+{
+	t_list	*tmp;
+	size_t	ra;
+	size_t	rb;
+	size_t	t;
+
+	tmp = info->ops;
+	ra = 0;
+	rb = 0;
+	t = 0;
+	while (t++ < i)
+		tmp = tmp->next;
+	t = 0;
+	while (t++ < j)
 	{
 		if (*(int*)tmp->content == OP_RA)
 			ra++;
@@ -596,64 +778,39 @@ int	join_r(t_info *info, t_list **prev, size_t len)
 	}
 	if (min_st(ra, rb) == 0)
 		return (0);
-	remove_n_ops(prev, min_st(ra, rb), OP_RA);
-	remove_n_ops(prev, min_st(ra, rb), OP_RB);
-	ret = insert_n_ops(prev, min_st(ra, rb), OP_RR);
-	(void)info;
-	return (ret);
+	join_r(info, i, min_st(ra, rb));
+	return (1);
 }
 
-void	join_rotates(t_info *info, size_t start, size_t len)
-{
-	size_t	i;
-	t_list	*tmp;
-	t_list	**prev;
-	int		ret;
-
-	tmp = info->ops;
-	prev = &(info->ops);
-	i = 0;
-	while (i++ < start)
-	{
-		tmp = tmp->next;
-		prev = &(tmp->next);
-	}
-	ret = 0;
-	ret += join_r(info, prev, len);
-	// ret += join_rr(info, start, len);
-	if (ret != 0)
-		clean_exit(info, ERROR);
-}
-
-void	compress_ops(t_info *info, size_t lst_size)
+void	compress_ops2(t_info *info)
 {
 	size_t	i;
 	size_t	j;
 	t_list	*tmp;
 
-	ft_printf("%d\n", ft_lstsize(info->ops));
-	tmp = info->ops;
 	i = 0;
-	while (i < lst_size && tmp != NULL)
+	tmp = info->ops;
+	while (tmp != NULL)
 	{
 		j = 0;
-		while (!op_is_push_swap(*(int*)tmp->content) && tmp != NULL)
+		while (tmp != NULL && !op_is_push_swap(*(int*)tmp->content))
 		{
 			j++;
 			tmp = tmp->next;
-			if (tmp == NULL)
-				break ;
 		}
-		if (j != 0)
-			join_rotates(info, i, j);
 		if (tmp != NULL)
 		{
-			tmp = tmp->next;
+			if (join_rotates(info, i, j) == 1)
+			{
+				tmp = info->ops;
+				i = 0;
+				continue ;
+			}
 			i += j + 1;
+			tmp = tmp->next;
 		}
 	}
 }
-
 // =============================================================================
 
 int	main(int argc, char **argv)
@@ -683,8 +840,10 @@ int	main(int argc, char **argv)
 
 	push_n_swap(&info);
 	print_ops(info.ops);
-	compress_ops(&info, ft_lstsize(info.ops));
-	// print_ops(info.ops);
+	ft_printf("%d\n", ft_lstsize(info.ops));
+	// compress_ops(&info, ft_lstsize(info.ops));
+	compress_ops2(&info);
+	print_ops(info.ops);
 	ft_printf("%d\n", ft_lstsize(info.ops));
 
 	//  sort();
