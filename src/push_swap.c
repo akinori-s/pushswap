@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/10 22:49:09 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/11 13:52:29 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -350,6 +350,8 @@ void	push_n_swap(t_info *info)
 	{
 		move_elem(info, info->stack_a);
 		info->need_sort_count -= 1;
+		// if (info->need_sort_count < 2)
+		// 	print_stacks(info->stack_a, info->stack_b, false);
 	}
 	while (info->stack_b != NULL)
 	{
@@ -423,6 +425,7 @@ void	join_rr(t_info *info, size_t i, size_t n)
 	size_t	rra;
 	size_t	rrb;
 
+	// ft_printf("do join_rr\n");
 	tmp = info->ops;
 	rra = 0;
 	while (rra++ < i)
@@ -431,18 +434,19 @@ void	join_rr(t_info *info, size_t i, size_t n)
 	rrb = 0;
 	while ((rra < n || rrb < n) && tmp != NULL)
 	{
-
 		if (*(int*)tmp->content == OP_RRA && rra < n)
 		{
 			*(int*)tmp->content = OP_RRR;
 			rra++;
+			tmp = tmp->next;
 		}
-		if (*(int*)tmp->content == OP_RRB && rrb < n)
+		else if (*(int*)tmp->content == OP_RRB && rrb < n)
 		{
 			shift_list_n_del_last(tmp);
 			rrb++;
 		}
-		tmp = tmp->next;
+		else
+			tmp = tmp->next;
 	}
 }
 
@@ -452,6 +456,7 @@ void	join_r(t_info *info, size_t i, size_t n)
 	size_t	ra;
 	size_t	rb;
 
+	// ft_printf("do join_r\n");
 	tmp = info->ops;
 	ra = 0;
 	while (ra++ < i)
@@ -460,18 +465,19 @@ void	join_r(t_info *info, size_t i, size_t n)
 	rb = 0;
 	while ((ra < n || rb < n) && tmp != NULL)
 	{
-
 		if (*(int*)tmp->content == OP_RA && ra < n)
 		{
 			*(int*)tmp->content = OP_RR;
 			ra++;
+			tmp = tmp->next;
 		}
-		if (*(int*)tmp->content == OP_RB && rb < n)
+		else if (*(int*)tmp->content == OP_RB && rb < n)
 		{
 			shift_list_n_del_last(tmp);
 			rb++;
 		}
-		tmp = tmp->next;
+		else
+			tmp = tmp->next;
 	}
 }
 
@@ -486,6 +492,8 @@ int	join_rev_rotates(t_info *info, size_t i, size_t j)
 	rra = 0;
 	rrb = 0;
 	t = 0;
+	// ft_printf("rev rotate======================\n");
+	// print_ops(info->ops, true);
 	while (t++ < i)
 		tmp = tmp->next;
 	t = 0;
@@ -497,6 +505,7 @@ int	join_rev_rotates(t_info *info, size_t i, size_t j)
 			rrb++;
 		tmp = tmp->next;
 	}
+	// ft_printf("rev rorate %d, %d, %d, %d\n", i, j, rra, rrb);
 	if (min_st(rra, rrb) == 0)
 		return (0);
 	join_rr(info, i, min_st(rra, rrb));
@@ -514,17 +523,26 @@ int	join_rotates(t_info *info, size_t i, size_t j)
 	ra = 0;
 	rb = 0;
 	t = 0;
+	// ft_printf("rotate==========================\n");
+	// print_ops(info->ops, true);
 	while (t++ < i)
 		tmp = tmp->next;
 	t = 0;
 	while (t++ < j)
 	{
 		if (*(int*)tmp->content == OP_RA)
+		{
+			// ft_printf("ra: %p\n", tmp);
 			ra++;
+		}
 		else if (*(int*)tmp->content == OP_RB)
+		{
+			// ft_printf("rb: %p\n", tmp);
 			rb++;
+		}
 		tmp = tmp->next;
 	}
+	// ft_printf("rorate     %d, %d, %d, %d\n", i, j, ra, rb);
 	if (min_st(ra, rb) == 0)
 		return (0);
 	join_r(info, i, min_st(ra, rb));
@@ -588,8 +606,8 @@ int	main(int argc, char **argv)
 	push_n_swap(&info);
 	// compress_ops(&info, ft_lstsize(info.ops));
 	compress_ops2(&info);
-	print_stack(info.stack_a, true);
-	// print_ops(info.ops, false);
+	// print_stack(info.stack_a, true);
+	print_ops(info.ops, false);
 
 	clean_exit(&info, 0);
 	return (0);
