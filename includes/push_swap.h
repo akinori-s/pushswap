@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/10 22:13:26 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/11 18:15:50 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,9 @@ typedef struct s_elem
 	long			num;
 	bool			need_sort;
 	bool			is_end;
+	bool			lis;
 	size_t			pos;
+	size_t			lis_len;
 	int				move_b_cost;
 }	t_elem;
 
@@ -51,6 +53,7 @@ typedef struct s_info
 	t_elem	*stack_a;
 	t_elem	*stack_b;
 	t_elem	*stack_t;
+	t_elem	*lis_head;
 	t_list	*ops;
 	
 	long	min;

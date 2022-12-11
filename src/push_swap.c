@@ -6,11 +6,85 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/11 13:52:29 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/11 23:32:43 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
+
+
+static void	indicate_lis_nodes(t_elem *start, t_info *info)
+{
+	size_t	j;
+	t_elem	*prev;
+
+	j = 0;
+	prev = start;
+	start->lis = true;
+	while (prev)
+	{
+		if (prev->pos < start->pos)
+		{
+			prev->lis = true;
+			prev->need_sort = false;
+			info->need_sort_count -= 1;
+			start = prev;
+			j++;
+			if (j >= info->lis_head->lis_len)
+				break ;
+		}
+		prev = prev->prev;
+		if (prev->is_end == true)
+			break ;
+	}
+}
+
+static void	update_lis(t_elem *node, t_info *info)
+{
+	if (node->lis_len > info->lis_head->lis_len)
+		info->lis_head = node;
+}
+
+static int	count_subsequence(t_elem *start)
+{
+	int		lis_len;
+	t_elem	*prev;
+
+	lis_len = 1;
+	prev = start->prev;
+	while (prev)
+	{
+		if (prev->pos < start->pos)
+			return (prev->lis_len + 1);
+		prev = prev->prev;
+		if (prev->is_end == true)
+			break ;
+	}
+	return (lis_len);
+}
+
+void	get_lis_and_compressed_coordinates(t_info *info)
+{
+	t_elem	*next;
+
+	if (!info->stack_a)
+		return ;
+	next = info->stack_a;
+	info->lis_head = info->stack_a;
+	while (next)
+	{
+		next->need_sort = true;
+		info->need_sort_count += 1;
+
+		next->lis = false;
+		next->lis_len = count_subsequence(next);
+		update_lis(next, info);
+		if (next->is_end == true)
+			break ;
+		next = next->next;
+	}
+	indicate_lis_nodes(info->lis_head, info);
+}
 
 // =============================================================================
 
@@ -600,9 +674,11 @@ int	main(int argc, char **argv)
 	info.stack_b->need_sort = true;
 	op_pb(&info);
 	info.stack_b->need_sort = true;
-	flag_non_increasing_nums(&info, info.stack_a);
+	// flag_non_increasing_nums(&info, info.stack_a);
 
-
+	// print_stack(info.stack_a, true);
+	get_lis_and_compressed_coordinates(&info);
+	// ft_printf("asdyoyoyoyooy\n");
 	push_n_swap(&info);
 	// compress_ops(&info, ft_lstsize(info.ops));
 	compress_ops2(&info);

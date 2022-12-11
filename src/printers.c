@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:59 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/11 00:40:53 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/11 23:15:52 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,7 +42,7 @@ void	print_stack(t_elem *stack, bool extra)
 	while (true)
 	{
 		if (extra)
-			ft_printf("%d, %d, %d\n", stack->num, stack->pos, stack->need_sort);
+			ft_printf("%d, %d, %d, %d, %d\n", stack->num, stack->pos, stack->need_sort, stack->lis, stack->is_end);
 		else
 			ft_printf("%d\n", stack->num);
 		if (stack->is_end == true)
@@ -68,7 +68,7 @@ void	print_stacks(t_elem *stack_a, t_elem *stack_b, bool extra)
 	while (true)
 	{
 		if (extra)
-			ft_printf("%d, %d, %d\n", stack_a->num, stack_a->pos, stack_a->need_sort);
+			ft_printf("%d, %d, %d, %d\n", stack_a->lis, stack_a->num, stack_a->pos, stack_a->need_sort);
 		else
 		{
 			if (a)
