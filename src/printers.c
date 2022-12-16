@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:59 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/11 23:15:52 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/16 17:58:59 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -155,6 +155,23 @@ void	print_ops(t_list *lst, bool debug)
 			ft_printf("rrb\n");
 		if (*(int *)(tmp->content) == OP_RRR)
 			ft_printf("rrr\n");
+		tmp = tmp->next;
+	}
+}
+
+void	print_lis(t_elem *lst)
+{
+	t_elem	*tmp;
+	size_t	i;
+
+	i = 0;
+	tmp = lst;
+	ft_printf("  i    pos   lis    num\n");
+	while (tmp != NULL)
+	{
+		ft_printf("%5d %5d %5d %13d\n", i++, tmp->pos, tmp->lis_len, tmp->num);
+		if (tmp->is_end == true)
+			break ;
 		tmp = tmp->next;
 	}
 }

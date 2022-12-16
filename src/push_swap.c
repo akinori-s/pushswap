@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/11 23:32:43 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/16 18:10:26 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,7 +21,7 @@ static void	indicate_lis_nodes(t_elem *start, t_info *info)
 	j = 0;
 	prev = start;
 	start->lis = true;
-	while (prev)
+	while (prev && prev->is_end == false && j < info->lis_head->lis_len)
 	{
 		if (prev->pos < start->pos)
 		{
@@ -30,12 +30,8 @@ static void	indicate_lis_nodes(t_elem *start, t_info *info)
 			info->need_sort_count -= 1;
 			start = prev;
 			j++;
-			if (j >= info->lis_head->lis_len)
-				break ;
 		}
 		prev = prev->prev;
-		if (prev->is_end == true)
-			break ;
 	}
 }
 
@@ -47,20 +43,21 @@ static void	update_lis(t_elem *node, t_info *info)
 
 static int	count_subsequence(t_elem *start)
 {
-	int		lis_len;
+	size_t	lis_len;
 	t_elem	*prev;
 
-	lis_len = 1;
+	lis_len = 0;
 	prev = start->prev;
-	while (prev)
+	while (prev && prev->is_end == false)
 	{
 		if (prev->pos < start->pos)
-			return (prev->lis_len + 1);
+		{
+			if (prev->lis_len > lis_len)
+				lis_len = prev->lis_len;
+		}
 		prev = prev->prev;
-		if (prev->is_end == true)
-			break ;
 	}
-	return (lis_len);
+	return (lis_len + 1);
 }
 
 void	get_lis_and_compressed_coordinates(t_info *info)
@@ -78,12 +75,15 @@ void	get_lis_and_compressed_coordinates(t_info *info)
 
 		next->lis = false;
 		next->lis_len = count_subsequence(next);
+		// ft_printf("%d\n", next->lis_len);
 		update_lis(next, info);
 		if (next->is_end == true)
 			break ;
 		next = next->next;
 	}
 	indicate_lis_nodes(info->lis_head, info);
+	// print_lis(info->stack_a);
+	// ft_printf("lis count: %d\n", info->lis_head->lis_len);
 }
 
 // =============================================================================
