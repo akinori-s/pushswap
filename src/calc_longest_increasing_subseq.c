@@ -6,49 +6,51 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 21:50:31 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/16 22:27:35 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/17 00:16:26 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	mark_lis_elems(t_elem *start, t_info *info)
+void	mark_lis_elems(t_elem *elem, t_info *info)
 {
 	size_t	j;
-	t_elem	*prev;
+	t_elem	*tmp;
 
 	j = 0;
-	prev = start;
-	start->lis = true;
-	while (prev && prev->is_end == false && j < info->lis_head->lis_len)
+	tmp = elem;
+	elem->lis = true;
+	while (tmp && j < info->lis_head->lis_len)
 	{
-		if (prev->lis_len + 1 == start->lis_len)
+		if (tmp->lis_len + 1 == elem->lis_len)
 		{
-			prev->lis = true;
-			prev->need_sort = false;
+			tmp->lis = true;
+			tmp->need_sort = false;
 			info->need_sort_count -= 1;
-			start = prev;
+			elem = tmp;
 			j++;
 		}
-		prev = prev->prev;
+		tmp = tmp->prev;
+		if (tmp->is_end == true)
+			break ;
 	}
 }
 
-int	calc_elem_lis_count(t_elem *start)
+int	calc_elem_lis_count(t_elem *elem)
 {
 	size_t	lis_len;
-	t_elem	*prev;
+	t_elem	*tmp;
 
 	lis_len = 0;
-	prev = start->prev;
-	while (prev && prev->is_end == false)
+	tmp = elem->prev;
+	while (tmp && tmp->is_end == false)
 	{
-		if (prev->pos < start->pos)
+		if (tmp->pos < elem->pos)
 		{
-			if (prev->lis_len > lis_len)
-				lis_len = prev->lis_len;
+			if (tmp->lis_len > lis_len)
+				lis_len = tmp->lis_len;
 		}
-		prev = prev->prev;
+		tmp = tmp->prev;
 	}
 	return (lis_len + 1);
 }

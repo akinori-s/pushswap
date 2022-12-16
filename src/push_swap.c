@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/16 23:54:59 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/17 00:18:20 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -149,18 +149,13 @@ void	push_n_swap(t_info *info)
 	size_t	ra;
 	size_t	rra;
 
-	// ft_printf("need sort count: %d\n", info->need_sort_count);
 	while (info->need_sort_count > 0 && stacklen(info->stack_a) > 2)
 	{
 		move_elem(info, info->stack_a);
 		info->need_sort_count -= 1;
 	}
-	// print_stacks(info->stack_a, info->stack_b, false);
 	while (info->stack_b != NULL)
-	// while (stacklen(info->stack_b) > 2)
 	{
-		// if (stacklen(info->stack_a) < 10)
-		// 	print_stacks(info->stack_a, info->stack_b, false);
 		move_elem_b(info, info->stack_b);
 	}
 	ra = index_of_stack(info->stack_a, stackminnum(info->stack_a));
