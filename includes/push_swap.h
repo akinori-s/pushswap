@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/16 17:55:22 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/16 21:25:22 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,6 +19,7 @@
 # include "ft_printf.h"
 
 # define ERROR -1
+# define OP_NONE 0
 
 # define OP_SA 1
 # define OP_SB 2

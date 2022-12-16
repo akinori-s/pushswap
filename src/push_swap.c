@@ -6,14 +6,14 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/16 18:10:26 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/16 21:39:55 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
 
-static void	indicate_lis_nodes(t_elem *start, t_info *info)
+static void	mark_lis_elems(t_elem *start, t_info *info)
 {
 	size_t	j;
 	t_elem	*prev;
@@ -23,7 +23,7 @@ static void	indicate_lis_nodes(t_elem *start, t_info *info)
 	start->lis = true;
 	while (prev && prev->is_end == false && j < info->lis_head->lis_len)
 	{
-		if (prev->pos < start->pos)
+		if (prev->lis_len + 1 == start->lis_len)
 		{
 			prev->lis = true;
 			prev->need_sort = false;
@@ -35,13 +35,7 @@ static void	indicate_lis_nodes(t_elem *start, t_info *info)
 	}
 }
 
-static void	update_lis(t_elem *node, t_info *info)
-{
-	if (node->lis_len > info->lis_head->lis_len)
-		info->lis_head = node;
-}
-
-static int	count_subsequence(t_elem *start)
+static int	calc_elem_lis_count(t_elem *start)
 {
 	size_t	lis_len;
 	t_elem	*prev;
@@ -60,7 +54,7 @@ static int	count_subsequence(t_elem *start)
 	return (lis_len + 1);
 }
 
-void	get_lis_and_compressed_coordinates(t_info *info)
+void	calc_longest_increasing_subsequence(t_info *info)
 {
 	t_elem	*next;
 
@@ -74,16 +68,14 @@ void	get_lis_and_compressed_coordinates(t_info *info)
 		info->need_sort_count += 1;
 
 		next->lis = false;
-		next->lis_len = count_subsequence(next);
-		// ft_printf("%d\n", next->lis_len);
-		update_lis(next, info);
+		next->lis_len = calc_elem_lis_count(next);
+		if (next->lis_len > info->lis_head->lis_len)
+			info->lis_head = next;
 		if (next->is_end == true)
 			break ;
 		next = next->next;
 	}
-	indicate_lis_nodes(info->lis_head, info);
-	// print_lis(info->stack_a);
-	// ft_printf("lis count: %d\n", info->lis_head->lis_len);
+	mark_lis_elems(info->lis_head, info);
 }
 
 // =============================================================================
@@ -424,8 +416,6 @@ void	push_n_swap(t_info *info)
 	{
 		move_elem(info, info->stack_a);
 		info->need_sort_count -= 1;
-		// if (info->need_sort_count < 2)
-		// 	print_stacks(info->stack_a, info->stack_b, false);
 	}
 	while (info->stack_b != NULL)
 	{
@@ -475,31 +465,12 @@ bool	op_is_push_swap(int	op)
 
 // =============================================================================
 
-void	shift_list_n_del_last(t_list *lst)
-{
-	t_list	*tmp;
-	t_list	*to_null;
-
-	tmp = lst;
-	while (tmp->next != NULL)
-	{
-		*(int*)tmp->content = *(int*)tmp->next->content;
-		tmp = tmp->next;
-		if (tmp->next != NULL)
-			if (tmp->next->next == NULL)
-				to_null = tmp;
-	}
-	ft_lstdelone(tmp, free);
-	to_null->next = NULL;
-}
-
 void	join_rr(t_info *info, size_t i, size_t n)
 {
 	t_list	*tmp;
 	size_t	rra;
 	size_t	rrb;
 
-	// ft_printf("do join_rr\n");
 	tmp = info->ops;
 	rra = 0;
 	while (rra++ < i)
@@ -516,7 +487,7 @@ void	join_rr(t_info *info, size_t i, size_t n)
 		}
 		else if (*(int*)tmp->content == OP_RRB && rrb < n)
 		{
-			shift_list_n_del_last(tmp);
+			*(int*)tmp->content = OP_NONE;
 			rrb++;
 		}
 		else
@@ -530,7 +501,6 @@ void	join_r(t_info *info, size_t i, size_t n)
 	size_t	ra;
 	size_t	rb;
 
-	// ft_printf("do join_r\n");
 	tmp = info->ops;
 	ra = 0;
 	while (ra++ < i)
@@ -547,7 +517,7 @@ void	join_r(t_info *info, size_t i, size_t n)
 		}
 		else if (*(int*)tmp->content == OP_RB && rb < n)
 		{
-			shift_list_n_del_last(tmp);
+			*(int*)tmp->content = OP_NONE;
 			rb++;
 		}
 		else
@@ -566,8 +536,6 @@ int	join_rev_rotates(t_info *info, size_t i, size_t j)
 	rra = 0;
 	rrb = 0;
 	t = 0;
-	// ft_printf("rev rotate======================\n");
-	// print_ops(info->ops, true);
 	while (t++ < i)
 		tmp = tmp->next;
 	t = 0;
@@ -579,7 +547,6 @@ int	join_rev_rotates(t_info *info, size_t i, size_t j)
 			rrb++;
 		tmp = tmp->next;
 	}
-	// ft_printf("rev rorate %d, %d, %d, %d\n", i, j, rra, rrb);
 	if (min_st(rra, rrb) == 0)
 		return (0);
 	join_rr(info, i, min_st(rra, rrb));
@@ -597,33 +564,24 @@ int	join_rotates(t_info *info, size_t i, size_t j)
 	ra = 0;
 	rb = 0;
 	t = 0;
-	// ft_printf("rotate==========================\n");
-	// print_ops(info->ops, true);
 	while (t++ < i)
 		tmp = tmp->next;
 	t = 0;
 	while (t++ < j)
 	{
 		if (*(int*)tmp->content == OP_RA)
-		{
-			// ft_printf("ra: %p\n", tmp);
 			ra++;
-		}
 		else if (*(int*)tmp->content == OP_RB)
-		{
-			// ft_printf("rb: %p\n", tmp);
 			rb++;
-		}
 		tmp = tmp->next;
 	}
-	// ft_printf("rorate     %d, %d, %d, %d\n", i, j, ra, rb);
 	if (min_st(ra, rb) == 0)
 		return (0);
 	join_r(info, i, min_st(ra, rb));
 	return (1);
 }
 
-void	compress_ops2(t_info *info)
+void	compress_ops(t_info *info)
 {
 	size_t	i;
 	size_t	j;
@@ -652,6 +610,7 @@ void	compress_ops2(t_info *info)
 		}
 	}
 }
+
 // =============================================================================
 
 int	main(int argc, char **argv)
@@ -663,10 +622,6 @@ int	main(int argc, char **argv)
 	inputs_to_stack(&info, &(info.stack_t), argc, argv);
 
 	sort_tmp_stack(info.stack_t);
-	// if (check_duplicates(info.stack_a) == 0)
-	// 	ft_printf("no duplicates\n");
-	// else
-	// 	ft_printf("there are duplicates\n");
 	get_stack_info(&info);
 
 	map_sorted_to_stack(info.stack_t, info.stack_a, stacklen(info.stack_t));
@@ -674,15 +629,9 @@ int	main(int argc, char **argv)
 	info.stack_b->need_sort = true;
 	op_pb(&info);
 	info.stack_b->need_sort = true;
-	// flag_non_increasing_nums(&info, info.stack_a);
-
-	// print_stack(info.stack_a, true);
-	get_lis_and_compressed_coordinates(&info);
-	// ft_printf("asdyoyoyoyooy\n");
+	calc_longest_increasing_subsequence(&info);
 	push_n_swap(&info);
-	// compress_ops(&info, ft_lstsize(info.ops));
-	compress_ops2(&info);
-	// print_stack(info.stack_a, true);
+	compress_ops(&info);
 	print_ops(info.ops, false);
 
 	clean_exit(&info, 0);

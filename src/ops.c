@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 15:33:18 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/11 23:19:14 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/16 21:31:03 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -24,11 +24,6 @@ void	op_sb(t_info *info)
 	if (insert_op_to_list(&(info->ops), OP_SB) == ERROR)
 		clean_exit(info, ERROR);
 }
-// void	op_ss(t_info *info)
-// {
-// 	if (insert_op_to_list(&(info->ops), OP_SS) == ERROR)
-// 		clean_exit(info, ERROR);
-// }
 void	op_pa(t_info *info)
 {
 	t_elem	*popped;
@@ -63,11 +58,6 @@ void	op_rb(t_info *info)
 	if (insert_op_to_list(&(info->ops), OP_RB) == ERROR)
 		clean_exit(info, ERROR);
 }
-// void	op_rr(t_info *info)
-// {
-// 	if (insert_op_to_list(&(info->ops), OP_RR) == ERROR)
-// 		clean_exit(info, ERROR);
-// }
 void	op_rra(t_info *info)
 {
 	rev_rotate_stack(&(info->stack_a));
@@ -80,10 +70,5 @@ void	op_rrb(t_info *info)
 	if (insert_op_to_list(&(info->ops), OP_RRB) == ERROR)
 		clean_exit(info, ERROR);
 }
-// void	op_rrr(t_info *info)
-// {
-// 	if (insert_op_to_list(&(info->ops), OP_RRR) == ERROR)
-// 		clean_exit(info, ERROR);
-// }
 
 // =============================================================================

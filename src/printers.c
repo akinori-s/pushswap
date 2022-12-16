@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:59 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/16 17:58:59 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/16 21:36:23 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -139,6 +139,8 @@ void	print_ops(t_list *lst, bool debug)
 			ft_printf("sa\n");
 		if (*(int *)(tmp->content) == OP_SB)
 			ft_printf("sb\n");
+		if (*(int *)(tmp->content) == OP_SS)
+			ft_printf("ss\n");
 		if (*(int *)(tmp->content) == OP_PA)
 			ft_printf("pa\n");
 		if (*(int *)(tmp->content) == OP_PB)
