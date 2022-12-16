@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:59 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/16 21:36:23 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/16 23:27:00 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -113,12 +113,16 @@ void	print_best_cost(t_cost *cost)
 	ft_printf("cost: %d\n", cost->cost);
 }
 
-void	print_calc_cost(t_cost *cost, long num)
+void	print_calc_cost(t_cost *cost, long num, long pos, bool is_b)
 {
 	ft_printf("======================\n");
-	ft_printf("num: %5d, cost: %5d\n", num, cost->cost);
-	ft_printf("ra: %5d, rra: %5d\n", cost->ra, cost->rra);
-	ft_printf("rb: %5d, rrb: %5d\n", cost->rb, cost->rrb);
+	ft_printf("pos: %13d\n", pos);
+	ft_printf("num: %13d, cost: %5d\n", num, cost->cost);
+	if (is_b)
+	{
+		ft_printf("ra: %5d, rra: %5d\n", cost->rb, cost->rrb);
+		ft_printf("rb: %5d, rrb: %5d\n", cost->ra, cost->rra);
+	}
 }
 
 void	print_ops(t_list *lst, bool debug)

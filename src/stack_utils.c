@@ -6,31 +6,11 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:06:04 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/06 18:08:30 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/16 22:22:57 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
-
-int	insert_op_to_list(t_list **list, int op)
-{
-	int		*ptr;
-	t_list	*new;
-
-	ptr = malloc(sizeof(int));
-	if (ptr == NULL)
-		return (-1);
-	*ptr = op;
-	new = ft_lstnew(ptr);
-	if (new == NULL)
-	{
-		free(ptr);
-		ptr = NULL;
-		return (-1);
-	}
-	ft_lstadd_back(list, new);
-	return (0);
-}
 
 t_elem	*new_elem(long num)
 {
@@ -95,4 +75,42 @@ size_t	stacklen(t_elem *stack)
 		i++;
 	}
 	return (i);
+}
+
+// =============================================================================
+
+long	stackmaxnum(t_elem *stack)
+{
+	t_elem	*elem;
+	long	max;
+
+	elem = stack;
+	max = LONG_MIN;
+	while (true)
+	{
+		if (elem->num > max)
+			max = elem->num;
+		if (elem->is_end == true)
+			break ;
+		elem = elem->next;
+	}
+	return (max);
+}
+
+long	stackminnum(t_elem *stack)
+{
+	t_elem	*elem;
+	long	min;
+
+	elem = stack;
+	min = LONG_MAX;
+	while (true)
+	{
+		if (elem->num < min)
+			min = elem->num;
+		if (elem->is_end == true)
+			break ;
+		elem = elem->next;
+	}
+	return (min);
 }
