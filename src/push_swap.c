@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/17 12:41:16 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/17 13:01:53 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,111 +35,6 @@ void	get_stack_info(t_info *info)
 	info->max = info->stack_t->prev->num;
 	info->max_pos = info->stack_t->prev->pos;
 	info->stack_t_len = stack_len;
-}
-
-// =============================================================================
-
-void	do_move_elem(t_info *info, t_cost *cost)
-{
-	size_t	i;
-
-	i = 0;
-	while (i++ < cost->ra)
-		op_ra(info);
-	i = 0;
-	while (i++ < cost->rb)
-		op_rb(info);
-	i = 0;
-	while (i++ < cost->rra)
-		op_rra(info);
-	i = 0;
-	while (i++ < cost->rrb)
-		op_rrb(info);
-	op_pb(info);
-}
-
-long	calc_pos_bigger(t_info *info, t_elem *to, t_elem *elem)
-{
-	t_elem	*tmp;
-	size_t	i;
-	long	min_dist;
-	long	min_dist_pos;
-
-	(void)info;
-	if (to == NULL)
-		return (0);
-	tmp = to;
-	min_dist = stackmaxnum(to);
-	i = 0;
-	min_dist_pos = 0;
-	while (true)
-	{
-		if (tmp->pos > elem->pos && abs_long(tmp->pos - elem->pos) < min_dist)
-		{
-			min_dist = tmp->pos - elem->pos;
-			min_dist_pos = i;
-		}
-		if (tmp->is_end == true)
-			break ;
-		tmp = tmp->next;
-		i += 1;
-	}
-	min_dist_pos++;
-	return (min_dist_pos);
-}
-
-size_t	calc_dest_index(t_info *info, t_elem *to, t_elem *elem)
-{
-	long	max;
-	long	min;
-	size_t	index_max;
-	size_t	index_min;
-
-	max = stackmaxnum(to);
-	min = stackminnum(to);
-	index_max = index_of_stack(to, max);
-	index_min = index_of_stack(to, min);
-	if (elem->num > max)
-		return (index_max);
-	if (elem->num < min)
-		return (index_min + 1);
-	return (calc_pos_bigger(info, to, elem));
-}
-
-void	calc_cost(t_cost *cost, t_elem *elem, t_info *info)
-{
-	size_t	index;
-	size_t	to_pos;
-	t_cost	cost_tmp;
-
-	cost_tmp = (t_cost){0};
-	index = index_of_stack(info->stack_a, elem->num);
-	cost_tmp.ra = index;
-	cost_tmp.rra = stacklen(info->stack_a) - index;
-	to_pos = calc_dest_index(info, info->stack_b, elem) % stacklen(info->stack_b);
-	cost_tmp.rb = to_pos;
-	cost_tmp.rrb = stacklen(info->stack_b) - to_pos;
-	cost_tmp.cost = calc_min_cost(&cost_tmp);
-	if (cost_tmp.cost < cost->cost || cost->cost == 0)
-		copy_cost(cost, &cost_tmp);
-}
-
-void	move_elem(t_info *info, t_elem *from)
-{
-	t_elem	*tmp;
-	t_cost	cost;
-
-	cost = (t_cost){0};
-	tmp = from;
-	while (true)
-	{
-		if (tmp->need_sort == true)
-			calc_cost(&cost, tmp, info);
-		if (tmp->is_end == true)
-			break;
-		tmp = tmp->next;
-	}
-	do_move_elem(info, &cost);
 }
 
 // =============================================================================
@@ -181,15 +76,10 @@ void	quick_sort_to_b(t_info *info)
 	size_t	q3;
 
 	q1 = info->stack_t_len / 4;
-	q2 = info->stack_t_len / 2;
+	q2 = info->stack_t_len / 4 * 2;
 	q3 = info->stack_t_len / 4 * 3;
-	// ft_printf("====%d, %d, %d=====\n", q1, q2, q3);
-	// print_stacks(info->stack_a, info->stack_b, true);
 	quick_sort_1(info, q2, q3);
-	// print_stacks(info->stack_a, info->stack_b, false);
 	quick_sort_1(info, 0, q1);
-	// print_stacks(info->stack_a, info->stack_b, false);
-
 }
 
 // =============================================================================
@@ -200,14 +90,6 @@ void	push_n_swap(t_info *info)
 	size_t	rra;
 
 	quick_sort_to_b(info);
-	// exit(0);
-	// move to b
-	// while (info->need_sort_count > 0 && stacklen(info->stack_a) > 2)
-	// {
-	// 	move_elem(info, info->stack_a);
-	// 	info->need_sort_count -= 1;
-	// }
-	// --move to b
 	while (info->stack_b != NULL)
 	{
 		move_elem_b(info, info->stack_b);
@@ -247,6 +129,20 @@ void	inputs_to_stack(t_info *info, t_elem **stack, int argc, char **argv)
 	}
 }
 
+bool	is_sorted(t_elem *stack)
+{
+	t_elem	*tmp;
+
+	tmp = stack;
+	while (tmp->is_end != true)
+	{
+		if (tmp->pos >= tmp->next->pos)
+			return (false);
+		tmp = tmp->next;
+	}
+	return (true);
+}
+
 // =============================================================================
 
 int	main(int argc, char **argv)
@@ -281,5 +177,7 @@ TODO
 
 1. delete the printer function, both .c and from the header file
 2. add error handling
+	* non-numerical inputs
+	* numerical inputs greater than int
 3. add sorting for numbers that are 5 or less
 */
