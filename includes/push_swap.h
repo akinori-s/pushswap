@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asasada <asasada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/17 16:41:16 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/17 21:45:41 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -153,7 +153,8 @@ void	calc_longest_increasing_subsequence(t_info *info);
 int	insert_op_to_list(t_list **list, int op);
 
 // sort_few.c
-// void	sort_few();
+void    sort_few(t_info *info);
+
 
 void	op_sa(t_info *info);
 void	op_sb(t_info *info);
