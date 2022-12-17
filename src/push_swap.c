@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
+/*   By: asasada <asasada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/17 21:46:50 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/17 16:41:42 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -196,7 +196,7 @@ int	main(int argc, char **argv)
 
 	info = (t_info){0};
 	info.argc = argc;
-	if (argc - 1 <= 1)
+	if (argc <= 2)
 		return (0);
 	inputs_to_stack(&info, &(info.stack_a), argc, argv);
 	inputs_to_stack(&info, &(info.stack_t), argc, argv);
@@ -205,7 +205,7 @@ int	main(int argc, char **argv)
 	map_sorted_to_stack(info.stack_t, info.stack_a, stacklen(info.stack_t));
 	if (is_sorted(info.stack_a))
 		return (0);
-	if (argc - 1 <= 5)
+	if (argc < 6)
 		sort_few(&info);
 	else
 	{
