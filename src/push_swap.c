@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/17 00:18:20 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/17 12:41:16 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -144,16 +144,70 @@ void	move_elem(t_info *info, t_elem *from)
 
 // =============================================================================
 
+void	quick_sort_1(t_info *info, size_t ax1_pos, size_t ax2_pos)
+{
+	t_elem	*tmp;
+	size_t	stack_len;
+	size_t	i;
+
+	stack_len = stacklen(info->stack_a);
+	tmp = info->stack_a;
+	i = 0;
+	while (i < stack_len)
+	{
+		while (!tmp->need_sort && i++ < stack_len)
+		{
+			op_ra(info);
+			tmp = info->stack_a;
+		}
+		if (tmp->pos >= ax1_pos)
+		{
+			op_pb(info);
+			tmp->need_sort = true;
+			if (tmp->pos > ax2_pos)
+				op_rb(info);
+		}
+		else
+			op_ra(info);
+		tmp = info->stack_a;
+		i++;
+	}
+}
+
+void	quick_sort_to_b(t_info *info)
+{
+	size_t	q1;
+	size_t	q2;
+	size_t	q3;
+
+	q1 = info->stack_t_len / 4;
+	q2 = info->stack_t_len / 2;
+	q3 = info->stack_t_len / 4 * 3;
+	// ft_printf("====%d, %d, %d=====\n", q1, q2, q3);
+	// print_stacks(info->stack_a, info->stack_b, true);
+	quick_sort_1(info, q2, q3);
+	// print_stacks(info->stack_a, info->stack_b, false);
+	quick_sort_1(info, 0, q1);
+	// print_stacks(info->stack_a, info->stack_b, false);
+
+}
+
+// =============================================================================
+
 void	push_n_swap(t_info *info)
 {
 	size_t	ra;
 	size_t	rra;
 
-	while (info->need_sort_count > 0 && stacklen(info->stack_a) > 2)
-	{
-		move_elem(info, info->stack_a);
-		info->need_sort_count -= 1;
-	}
+	quick_sort_to_b(info);
+	// exit(0);
+	// move to b
+	// while (info->need_sort_count > 0 && stacklen(info->stack_a) > 2)
+	// {
+	// 	move_elem(info, info->stack_a);
+	// 	info->need_sort_count -= 1;
+	// }
+	// --move to b
 	while (info->stack_b != NULL)
 	{
 		move_elem_b(info, info->stack_b);
@@ -214,6 +268,7 @@ int	main(int argc, char **argv)
 	calc_longest_increasing_subsequence(&info);
 	push_n_swap(&info);
 	compress_ops(&info);
+
 	print_ops(info.ops, false);
 
 	clean_exit(&info, 0);
