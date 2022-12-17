@@ -23,7 +23,8 @@ SRCS	:= push_swap.c \
 			push_backto_a.c \
 			ops_compression.c \
 			calc_longest_increasing_subseq.c \
-			ops_utils.c
+			ops_utils.c \
+			sort_few.c
 
 SRCS	:= $(addprefix $(SRCS_DIR), $(SRCS))
 OBJS	:= ${SRCS:.c=.o}

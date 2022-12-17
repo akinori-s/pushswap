@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   clean_exit.c                                       :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
+/*   By: asasada <asasada@student.42.fr>            +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:05:14 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/11 23:29:20 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/17 15:53:29 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -36,5 +36,7 @@ void	clean_exit(t_info *info, int exit_code)
 		free_stack(info->stack_t);
 	if (info->ops != NULL)
 		ft_lstclear(&(info->ops), free);
+	if (exit_code == PS_ERROR)
+		ft_printf("Error\n");
 	exit(exit_code);
 }
