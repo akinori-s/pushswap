@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 14:22:08 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/18 15:38:17 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -214,7 +214,7 @@ int	main(int argc, char **argv)
 		clean_exit(&info, PS_ERROR);
 	if (is_sorted(info.stack_a))
 	{
-		ft_printf("issorted\n");
+		// ft_printf("issorted\n");
 		return (0);
 	}
 	if (argc - 1 <= 6)

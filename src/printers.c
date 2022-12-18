@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:59 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/17 12:21:35 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/18 15:19:16 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -73,14 +73,16 @@ void	print_stacks(t_elem *stack_a, t_elem *stack_b, bool extra)
 		{
 			if (a)
 			{
-				ft_printf("%-6d", stack_a->pos);
+				ft_printf("%-4d", stack_a->pos);
+				ft_printf("%-4d", stack_a->tmp_pos);
 				ft_printf("%13d", stack_a->num);
 			}
 			else
 				ft_printf("%19s", "");
 			if (b)
 			{
-				ft_printf(" %-6d", stack_b->pos);
+				ft_printf(" %-4d", stack_b->pos);
+				ft_printf("%-4d", stack_b->tmp_pos);
 				ft_printf(" %13d\n", stack_b->num);
 			}
 			else
