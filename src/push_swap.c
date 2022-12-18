@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 14:05:49 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/18 14:22:08 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -137,18 +137,25 @@ int	ps_atoi(char *str, int *err)
 int	ps_isnumeric(char *str)
 {
 	bool	found_numeric;
+	size_t	numeric_count;
 
 	found_numeric = false;
+	numeric_count = 0;
 	while (*str != '\0')
 	{
 		if (*str >= '0' && *str <= '9')
+		{
 			found_numeric = true;
+			numeric_count++;
+		}
 		if ((*str < '0' || *str > '9') && (*str != '+' && *str != '-'))
 			return (1);
 		if ((*str == '+' || *str == '-') && found_numeric)
 			return (1);
 		str++;
 	}
+	if (numeric_count == 0)
+		return (1);
 	return (0);
 }
 
@@ -200,13 +207,11 @@ int	main(int argc, char **argv)
 		return (0);
 	inputs_to_stack(&info, &(info.stack_a), argc, argv);
 	inputs_to_stack(&info, &(info.stack_t), argc, argv);
-	// ft_printf("%d\n", info.stack_a->is_end);
-	// ft_printf("%d\n", info.stack_a->next->is_end);
-	// ft_printf("%d\n", info.stack_a->next->next->is_end);
-	// print_stacks(info.stack_a, info.stack_b, true);
 	sort_tmp_stack(info.stack_t);
 	get_stack_info(&info);
 	map_sorted_to_stack(info.stack_t, info.stack_a, stacklen(info.stack_t));
+	if (check_duplicates(info.stack_t))
+		clean_exit(&info, PS_ERROR);
 	if (is_sorted(info.stack_a))
 	{
 		ft_printf("issorted\n");
@@ -220,11 +225,8 @@ int	main(int argc, char **argv)
 		push_n_swap(&info);
 		compress_ops(&info);
 	}
-	// ft_printf("%d\n", info.stack_a->is_end);
-	// ft_printf("%d\n", info.stack_a->next->is_end);
-	// ft_printf("%d\n", info.stack_a->next->next->is_end);
 	print_ops(info.ops, false);
-	print_stacks(info.stack_a, info.stack_b, true);
+	// print_stacks(info.stack_a, info.stack_b, true);
 	clean_exit(&info, 0);
 	return (0);
 }

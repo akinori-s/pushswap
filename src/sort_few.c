@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:38:15 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 14:06:48 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/18 14:15:01 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -21,12 +21,7 @@ void    sort_3_or_less(t_info *info, int arg_count)
 		if (info->stack_a->pos == 0)
 		{
 			op_rra(info);
-			// print_stack_elem(info->stack_a);
-			// ft_printf("asdfasdf%d\n", info->stack_a->is_end);
-			// ft_printf("%d\n", info->stack_a->next->is_end);
-			// ft_printf("%d\n", info->stack_a->next->next->is_end);
 			op_sa(info);
-			// print_stack_elem(info->stack_a);
 		}
 		else if (info->stack_a->pos == 1 && info->stack_a->next->pos == 0)
 			op_sa(info);
@@ -34,17 +29,8 @@ void    sort_3_or_less(t_info *info, int arg_count)
 			op_rra(info);
 		else if (info->stack_a->next->pos == 1)
 		{
-			// print_stack_elem(info->stack_a);
 			op_sa(info);
-			// print_stack_elem(info->stack_a);
-			// exit(0);
-			// ft_printf("%d\n", info->stack_a->is_end);
-			// ft_printf("%d\n", info->stack_a->next->is_end);
-			// ft_printf("%d\n", info->stack_a->next->next->is_end);
 			op_rra(info);
-			// ft_printf("%d\n", info->stack_a->is_end);
-			// ft_printf("%d\n", info->stack_a->next->is_end);
-			// ft_printf("%d\n", info->stack_a->next->next->is_end);
 		}
 		else
 			op_ra(info);
