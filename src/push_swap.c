@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 15:38:17 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/18 16:01:21 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -124,7 +124,7 @@ int	ps_atoi(char *str, int *err)
 	while (*str >= '0' && *str <= '9')
 	{
 		n = (n * 10) + (*str - '0');
-		if (n > (long)INT_MAX || n * m_count < (long)INT_MIN)
+		if ((n > (long)INT_MAX && m_count == 1) || n * m_count < (long)INT_MIN)
 		{
 			*err = true;
 			return (0);
@@ -203,13 +203,15 @@ int	main(int argc, char **argv)
 	t_info	info;
 
 	info = (t_info){0};
-	if (argc - 1 <= 1)
+	if (argc - 1 <= 0)
 		return (0);
 	inputs_to_stack(&info, &(info.stack_a), argc, argv);
 	inputs_to_stack(&info, &(info.stack_t), argc, argv);
 	sort_tmp_stack(info.stack_t);
 	get_stack_info(&info);
 	map_sorted_to_stack(info.stack_t, info.stack_a, stacklen(info.stack_t));
+	if (argc - 1 <= 1)
+		return (0);
 	if (check_duplicates(info.stack_t))
 		clean_exit(&info, PS_ERROR);
 	if (is_sorted(info.stack_a))
@@ -223,8 +225,8 @@ int	main(int argc, char **argv)
 	{
 		calc_longest_increasing_subsequence(&info);
 		push_n_swap(&info);
-		compress_ops(&info);
 	}
+	compress_ops(&info);
 	print_ops(info.ops, false);
 	// print_stacks(info.stack_a, info.stack_b, true);
 	clean_exit(&info, 0);
@@ -239,9 +241,12 @@ TODO
 2. add error handling
 	* non-numerical inputs
 	* numerical inputs greater than int
+	* there are duplicates
+	* it is already sorted
 3. add sorting for numbers that are 5 or less
-4. handle command line arguments
+4. DONE handle command line arguments
 	* only one argument (program name)
 	* only two arguments (no sorting needed)
 	* three arguments (might not need to sort)
+	* four to six arguments (might not need to sort)
 */

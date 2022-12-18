@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/17 16:38:15 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 15:40:11 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/18 15:50:10 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -38,7 +38,33 @@ void	assign_tmp_pos(t_elem *stack)
 	}
 }
 
-void	sort_3_or_less(t_info *info, int arg_count)
+void	sort_3_or_less_b(t_info *info, int arg_count)
+{
+	if (arg_count == 2)
+		op_rb(info);
+	else
+	{
+		assign_tmp_pos(info->stack_b);
+		if (info->stack_b->tmp_pos == 0)
+		{
+			op_rrb(info);
+			op_sb(info);
+		}
+		else if (info->stack_b->tmp_pos == 1 && info->stack_b->next->tmp_pos == 0)
+			op_sb(info);
+		else if (info->stack_b->tmp_pos == 1 && info->stack_b->next->tmp_pos == 2)
+			op_rrb(info);
+		else if (info->stack_b->next->tmp_pos == 1)
+		{
+			op_sb(info);
+			op_rrb(info);
+		}
+		else
+			op_rb(info);
+	}
+}
+
+void	sort_3_or_less_a(t_info *info, int arg_count)
 {
 	if (arg_count == 2)
 		op_ra(info);
@@ -74,7 +100,9 @@ void	sort_4_to_6(t_info *info, int arg_count)
 		op_pb(info);
 	// print_stacks(info->stack_a, info->stack_b, false);
 	if (is_sorted(info->stack_a) != true)
-		sort_3_or_less(info, 3);
+		sort_3_or_less_a(info, 3);
+	if (arg_count == 6)
+		sort_3_or_less_b(info, 3);
 	// print_stacks(info->stack_a, info->stack_b, false);
 	while (info->stack_b != NULL)
 		move_elem_b(info, info->stack_b);
@@ -96,7 +124,7 @@ void	sort_4_to_6(t_info *info, int arg_count)
 void	sort_few(t_info *info, int arg_count)
 {
 	if (arg_count <= 3)
-		sort_3_or_less(info, arg_count);
+		sort_3_or_less_a(info, arg_count);
 	else
 		sort_4_to_6(info, arg_count);
 }
