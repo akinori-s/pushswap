@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 16:01:21 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/18 21:33:48 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -115,6 +115,8 @@ int	ps_atoi(char *str, int *err)
 
 	n = 0;
 	m_count = 1;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
 	if (*str == '-' || *str == '+')
 	{
 		if (*str == '-')
@@ -249,4 +251,5 @@ TODO
 	* only two arguments (no sorting needed)
 	* three arguments (might not need to sort)
 	* four to six arguments (might not need to sort)
+5. allow spaces in ps_atoi
 */

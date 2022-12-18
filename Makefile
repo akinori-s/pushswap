@@ -32,16 +32,22 @@ OBJS	:= ${SRCS:.c=.o}
 HEADERS :=	./includes/push_swap.h
 NAME	:= push_swap
 
-# B_SRCS_DIR	:= bonus/
-# B_SRCS		:= push_swap_bonus.c
+B_SRCS_DIR	:= bonus/
+B_SRCS		:=	checker_bonus.c \
+				clean_exit_bonus.c \
+				prep_stack_bonus.c \
+				push_swap_ops_bonus.c \
+				rotate_ops_bonus.c \
+				stack_ops_bonus.c \
+				stack_ops2_bonus.c \
+				stack_utils_bonus.c
 
-# B_SRCS	:= $(addprefix $(B_SRCS_DIR), $(B_SRCS))
-# B_OBJS	:= ${B_SRCS:.c=.o}
+B_SRCS	:= $(addprefix $(B_SRCS_DIR), $(B_SRCS))
+B_OBJS	:= ${B_SRCS:.c=.o}
 
-# B_INCLDIR	:=	-I ./bonus/includes
-# B_HEADERS	:=	./bonus/includes/solong_bonus.h \
-# 				./bonus/includes/math_utils_bonus.h
-# B_NAME	:=	so_long_bonus
+B_INCLDIR	:=	-I ./bonus/includes
+B_HEADERS	:=	./bonus/includes/checker_bonus.h
+B_NAME	:=	checker
 
 LIBFT		:= ./libft/libft.a
 
@@ -71,13 +77,13 @@ clean:
 fclean:	clean
 	${RM} ${NAME} ${B_NAME}
 
-# ${B_OBJS}:	${B_SRCS_DIR}%.o : ${B_SRCS_DIR}%.c
-# 	${CC} ${CFLAGS} ${B_INCLDIR} ${LIBFT_INCLDIR} ${PF_INCLDIR} -c $< -o $@
+${B_OBJS}:	${B_SRCS_DIR}%.o : ${B_SRCS_DIR}%.c
+	${CC} ${CFLAGS} ${B_INCLDIR} ${LIBFT_INCLDIR} ${PF_INCLDIR} -c $< -o $@
 
-# ${B_NAME}:	${B_OBJS} ${B_HEADERS} ${LIBFT}
-# 	${CC} ${CFLAGS} ${B_OBJS} -o ${B_NAME} ${LIBFT}
+${B_NAME}:	${B_OBJS} ${B_HEADERS} ${LIBFT}
+	${CC} ${CFLAGS} ${B_OBJS} -o ${B_NAME} ${LIBFT}
 
-# bonus:	${B_NAME}
+bonus:	${B_NAME}
 
 re:		fclean all
 
