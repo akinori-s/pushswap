@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 21:47:21 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/16 23:56:01 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/18 12:33:48 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,7 +86,10 @@ void	calc_cost_b(t_cost *cost, t_elem *elem, t_info *info)
 	index = index_of_stack(info->stack_b, elem->num);
 	cost_tmp.ra = index;
 	cost_tmp.rra = stacklen(info->stack_b) - index;
-	to_pos = calc_dest_index_b(info, info->stack_a, elem) % stacklen(info->stack_a);
+	if (info->stack_a == NULL)
+		to_pos = 0;
+	else
+		to_pos = calc_dest_index_b(info, info->stack_a, elem) % stacklen(info->stack_a);
 	cost_tmp.rb = to_pos;
 	cost_tmp.rrb = stacklen(info->stack_a) - to_pos;
 	cost_tmp.cost = calc_min_cost(&cost_tmp);
@@ -104,8 +107,7 @@ void	move_elem_b(t_info *info, t_elem *from)
 	tmp = from;
 	while (true)
 	{
-		if (tmp->need_sort == true)
-			calc_cost_b(&cost, tmp, info);
+		calc_cost_b(&cost, tmp, info);
 		if (tmp->is_end == true)
 			break;
 		tmp = tmp->next;

@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.h                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asasada <asasada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/17 16:41:16 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/18 13:22:40 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,8 +20,8 @@
 
 # define ERROR -1
 # define PS_ERROR -2
-# define OP_NONE 0
 
+# define OP_NONE 0
 # define OP_SA 1
 # define OP_SB 2
 # define OP_SS 3
@@ -57,8 +57,6 @@ typedef struct s_info
 	t_elem	*stack_t;
 	t_elem	*lis_head;
 	t_list	*ops;
-
-	int		argc;
 
 	long	min;
 	long	median;
@@ -153,7 +151,7 @@ void	calc_longest_increasing_subsequence(t_info *info);
 int	insert_op_to_list(t_list **list, int op);
 
 // sort_few.c
-// void	sort_few();
+void    sort_few(t_info *info, int arg_count);
 
 void	op_sa(t_info *info);
 void	op_sb(t_info *info);

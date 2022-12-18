@@ -3,10 +3,10 @@
 /*                                                        :::      ::::::::   */
 /*   push_swap.c                                        :+:      :+:    :+:   */
 /*                                                    +:+ +:+         +:+     */
-/*   By: asasada <asasada@student.42.fr>            +#+  +:+       +#+        */
+/*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/17 16:41:42 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/18 14:05:49 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -58,7 +58,6 @@ void	quick_sort_1(t_info *info, size_t ax1_pos, size_t ax2_pos)
 		if (tmp->pos >= ax1_pos)
 		{
 			op_pb(info);
-			tmp->need_sort = true;
 			if (tmp->pos > ax2_pos)
 				op_rb(info);
 		}
@@ -78,6 +77,7 @@ void	quick_sort_to_b(t_info *info)
 	q1 = info->stack_t_len / 4;
 	q2 = info->stack_t_len / 4 * 2;
 	q3 = info->stack_t_len / 4 * 3;
+	// ft_printf("%d, %d, %d\n", q1, q2, q3);
 	quick_sort_1(info, q2, q3);
 	quick_sort_1(info, 0, q1);
 }
@@ -89,6 +89,7 @@ void	push_n_swap(t_info *info)
 	size_t	ra;
 	size_t	rra;
 
+	// print_stacks(info->stack_a, info->stack_b, true);
 	quick_sort_to_b(info);
 	while (info->stack_b != NULL)
 	{
@@ -130,7 +131,7 @@ int	ps_atoi(char *str, int *err)
 		}
 		str++;
 	}
-	return ((int)n);
+	return ((int)(n * m_count));
 }
 
 int	ps_isnumeric(char *str)
@@ -195,30 +196,36 @@ int	main(int argc, char **argv)
 	t_info	info;
 
 	info = (t_info){0};
-	info.argc = argc;
-	if (argc <= 2)
+	if (argc - 1 <= 1)
 		return (0);
 	inputs_to_stack(&info, &(info.stack_a), argc, argv);
 	inputs_to_stack(&info, &(info.stack_t), argc, argv);
+	// ft_printf("%d\n", info.stack_a->is_end);
+	// ft_printf("%d\n", info.stack_a->next->is_end);
+	// ft_printf("%d\n", info.stack_a->next->next->is_end);
+	// print_stacks(info.stack_a, info.stack_b, true);
 	sort_tmp_stack(info.stack_t);
 	get_stack_info(&info);
 	map_sorted_to_stack(info.stack_t, info.stack_a, stacklen(info.stack_t));
 	if (is_sorted(info.stack_a))
+	{
+		ft_printf("issorted\n");
 		return (0);
-	if (argc < 6)
-		sort_few(&info);
+	}
+	if (argc - 1 <= 6)
+		sort_few(&info, argc - 1);
 	else
 	{
-		op_pb(&info);
-		info.stack_b->need_sort = true;
-		op_pb(&info);
-		info.stack_b->need_sort = true;
 		calc_longest_increasing_subsequence(&info);
 		push_n_swap(&info);
 		compress_ops(&info);
-		print_ops(info.ops, false);
-		clean_exit(&info, 0);
 	}
+	// ft_printf("%d\n", info.stack_a->is_end);
+	// ft_printf("%d\n", info.stack_a->next->is_end);
+	// ft_printf("%d\n", info.stack_a->next->next->is_end);
+	print_ops(info.ops, false);
+	print_stacks(info.stack_a, info.stack_b, true);
+	clean_exit(&info, 0);
 	return (0);
 }
 

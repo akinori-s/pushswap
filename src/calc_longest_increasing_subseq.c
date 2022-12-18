@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 21:50:31 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/17 00:16:26 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/18 12:48:58 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -20,7 +20,8 @@ void	mark_lis_elems(t_elem *elem, t_info *info)
 	j = 0;
 	tmp = elem;
 	elem->lis = true;
-	while (tmp && j < info->lis_head->lis_len)
+	elem->need_sort = false;
+	while (j < info->lis_head->lis_len)
 	{
 		if (tmp->lis_len + 1 == elem->lis_len)
 		{
