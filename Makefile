@@ -40,7 +40,9 @@ B_SRCS		:=	checker_bonus.c \
 				rotate_ops_bonus.c \
 				stack_ops_bonus.c \
 				stack_ops2_bonus.c \
-				stack_utils_bonus.c
+				stack_utils_bonus.c \
+				read_inputs.c \
+				execute_ops.c
 
 B_SRCS	:= $(addprefix $(B_SRCS_DIR), $(B_SRCS))
 B_OBJS	:= ${B_SRCS:.c=.o}

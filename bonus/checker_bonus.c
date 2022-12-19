@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:38:28 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 22:06:27 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/19 23:18:20 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -65,29 +65,6 @@ int	ps_isnumeric(char *str)
 	return (0);
 }
 
-void	inputs_to_stack(t_info *info, t_elem **stack, int argc, char **argv)
-{
-	int		i;
-	int		err;
-	long	num;
-	t_elem	*tmp;
-
-	i = 1;
-	err = 0;
-	while (i < argc)
-	{
-		num = ps_atoi(argv[i], &err);
-		err += ps_isnumeric(argv[i]);
-		if (err > 0)
-			clean_exit(info, PS_ERROR);
-		tmp = new_elem(num);
-		if (tmp == NULL)
-			clean_exit(info, ERROR);
-		elem_add_back(tmp, stack);
-		i++;
-	}
-}
-
 bool	is_sorted(t_elem *stack)
 {
 	t_elem	*tmp;
@@ -95,31 +72,11 @@ bool	is_sorted(t_elem *stack)
 	tmp = stack;
 	while (tmp->is_end != true)
 	{
-		if (tmp->pos >= tmp->next->pos)
+		if (tmp->num >= tmp->next->num)
 			return (false);
 		tmp = tmp->next;
 	}
 	return (true);
-}
-
-int	insert_op_to_list(t_list **list, int op)
-{
-	int		*ptr;
-	t_list	*new;
-
-	ptr = malloc(sizeof(int));
-	if (ptr == NULL)
-		return (-1);
-	*ptr = op;
-	new = ft_lstnew(ptr);
-	if (new == NULL)
-	{
-		free(ptr);
-		ptr = NULL;
-		return (-1);
-	}
-	ft_lstadd_back(list, new);
-	return (0);
 }
 
 int	main(int argc, char **argv)
@@ -134,6 +91,8 @@ int	main(int argc, char **argv)
 	sort_tmp_stack(info.stack_t);
 	if (check_duplicates(info.stack_t))
 		clean_exit(&info, PS_ERROR);
+	read_ops(&info);
+	execute_ops(&info);
 	if (is_sorted(info.stack_a))
 		ft_printf("OK\n");
 	else

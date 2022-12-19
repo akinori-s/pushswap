@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:57:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 21:57:57 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/19 23:17:03 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -25,10 +25,8 @@ t_elem	*pop_elem(t_elem **stack)
 	elem = *stack;
 	prev = elem->prev;
 	next = elem->next;
-
 	prev->next = next;
 	next->prev = prev;
-
 	if (elem->is_end != true)
 		*stack = next;
 	else
