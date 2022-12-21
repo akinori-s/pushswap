@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:38:28 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/19 23:18:20 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 08:24:13 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -93,7 +93,7 @@ int	main(int argc, char **argv)
 		clean_exit(&info, PS_ERROR);
 	read_ops(&info);
 	execute_ops(&info);
-	if (is_sorted(info.stack_a))
+	if (is_sorted(info.stack_a) && info.stack_b == NULL)
 		ft_printf("OK\n");
 	else
 		ft_printf("KO\n");
