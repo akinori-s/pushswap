@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:38:28 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/22 08:24:13 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 21:47:07 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -42,23 +42,22 @@ int	ps_atoi(char *str, int *err)
 
 int	ps_isnumeric(char *str)
 {
-	bool	found_numeric;
 	size_t	numeric_count;
 
-	found_numeric = false;
 	numeric_count = 0;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str == '-' || *str == '+')
+		str++;
 	while (*str != '\0')
 	{
 		if (*str >= '0' && *str <= '9')
 		{
-			found_numeric = true;
 			numeric_count++;
+			str++;
 		}
-		if ((*str < '0' || *str > '9') && (*str != '+' && *str != '-'))
+		else
 			return (1);
-		if ((*str == '+' || *str == '-') && found_numeric)
-			return (1);
-		str++;
 	}
 	if (numeric_count == 0)
 		return (1);
@@ -93,7 +92,7 @@ int	main(int argc, char **argv)
 		clean_exit(&info, PS_ERROR);
 	read_ops(&info);
 	execute_ops(&info);
-	if (is_sorted(info.stack_a) && info.stack_b == NULL)
+	if (is_sorted(info.stack_a) && stacklen(info.stack_b) == 0)
 		ft_printf("OK\n");
 	else
 		ft_printf("KO\n");

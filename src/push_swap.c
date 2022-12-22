@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/22 09:45:49 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 21:21:47 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -98,22 +98,3 @@ int	main(int argc, char **argv)
 	clean_exit(&info, 0);
 	return (0);
 }
-
-/*
-TODO
----
-
-1. delete the printer function, both .c and from the header file
-2. add error handling
-	* non-numerical inputs
-	* numerical inputs greater than int
-	* there are duplicates
-	* it is already sorted
-3. add sorting for numbers that are 5 or less
-4. DONE handle command line arguments
-	* only one argument (program name)
-	* only two arguments (no sorting needed)
-	* three arguments (might not need to sort)
-	* four to six arguments (might not need to sort)
-5. allow spaces in ps_atoi
-*/

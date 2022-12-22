@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 22:23:31 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/22 08:43:25 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 21:20:20 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -62,23 +62,22 @@ int	ps_atoi(char *str, int *err)
 
 int	ps_isnumeric(char *str)
 {
-	bool	found_numeric;
 	size_t	numeric_count;
 
-	found_numeric = false;
 	numeric_count = 0;
+	while ((*str >= 9 && *str <= 13) || *str == 32)
+		str++;
+	if (*str == '-' || *str == '+')
+		str++;
 	while (*str != '\0')
 	{
 		if (*str >= '0' && *str <= '9')
 		{
-			found_numeric = true;
 			numeric_count++;
+			str++;
 		}
-		if ((*str < '0' || *str > '9') && (*str != '+' && *str != '-'))
+		else
 			return (1);
-		if ((*str == '+' || *str == '-') && found_numeric)
-			return (1);
-		str++;
 	}
 	if (numeric_count == 0)
 		return (1);
