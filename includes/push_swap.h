@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/22 20:22:07 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 20:32:59 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,6 +77,9 @@ typedef struct s_cost
 }	t_cost;
 
 // push_swap.c
+void	get_stack_info(t_info *info);
+void	prep_push_swap(t_info *info, int argc, char **argv);
+void	print_ops(t_list *lst);
 
 // clean_exit.c
 void	free_stack(t_elem *stack);
@@ -86,8 +89,6 @@ void	clean_exit(t_info *info, int exit_code);
 t_elem	*new_elem(long num);
 size_t	index_of_stack(t_elem *stack, long num);
 size_t	stacklen(t_elem *stack);
-
-// stack_utils2.c
 long	stackmaxnum(t_elem *stack);
 long	stackminnum(t_elem *stack);
 

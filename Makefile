@@ -16,7 +16,6 @@ SRCS	:= push_swap.c \
 			rotate_ops.c \
 			clean_exit.c \
 			stack_utils.c \
-			stack_utils2.c \
 			stack_ops.c \
 			stack_ops2.c \
 			prep_stack.c \
