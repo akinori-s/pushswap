@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 15:29:18 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 08:47:55 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -77,7 +77,6 @@ typedef struct s_cost
 }	t_cost;
 
 // push_swap.c
-bool	is_sorted(t_elem *stack);
 
 // clean_exit.c
 void	free_stack(t_elem *stack);
@@ -93,8 +92,8 @@ long	stackminnum(t_elem *stack);
 // prep_stack.c
 void	apply_arr_to_stack(long *arr, t_elem *stack);
 void	sort_long_arr(long *arr, size_t arr_size);
-int	sort_tmp_stack(t_elem *stack);
-int	check_duplicates(t_elem	*sorted);
+int		sort_tmp_stack(t_elem *stack);
+int		check_duplicates(t_elem	*sorted);
 void	map_sorted_to_stack(t_elem *sorted, t_elem *stack, size_t sorted_len);
 
 // stack_ops.c
@@ -149,23 +148,34 @@ int		join_rotates(t_info *info, size_t i, size_t j);
 void	compress_ops(t_info *info);
 
 // calc_longest_increasing_subseq.c
+void	mark_lis_elems(t_elem *elem, t_info *info);
+int		calc_elem_lis_count(t_elem *elem);
 void	calc_longest_increasing_subsequence(t_info *info);
 
-// ops_utils.c
-int	insert_op_to_list(t_list **list, int op);
+// read_inputs.c
+int		insert_op_to_list(t_list **list, int op);
+int		ps_atoi(char *str, int *err);
+int		ps_isnumeric(char *str);
+void	inputs_to_stack(t_info *info, t_elem **stack, int argc, char **argv);
+bool	is_sorted(t_elem *stack);
 
 // sort_few.c
-void    sort_few(t_info *info, int arg_count);
+void	assign_tmp_pos(t_elem *stack);
+void	sort_3_or_less_b(t_info *info, int arg_count);
+void	sort_3_or_less_a(t_info *info, int arg_count);
+void	sort_4_to_6(t_info *info, int arg_count);
+void	sort_few(t_info *info, int arg_count);
 
+// push_swap_ops.c
 void	op_sa(t_info *info);
 void	op_sb(t_info *info);
 void	op_pa(t_info *info);
 void	op_pb(t_info *info);
+
+// rotate_ops.c
 void	op_ra(t_info *info);
 void	op_rb(t_info *info);
 void	op_rra(t_info *info);
 void	op_rrb(t_info *info);
-
-
 
 #endif

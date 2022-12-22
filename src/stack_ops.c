@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:13:10 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 14:35:09 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 08:48:50 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,10 +35,9 @@ void	swap(t_elem **stack)
 	elem->prev = next;
 	next->next = elem;
 	if (next->is_end == true)
-	{
 		next->is_end = false;
+	if (next->is_end == true)
 		elem->is_end = true;
-	}
 	*stack = next;
 }
 
@@ -104,10 +103,8 @@ t_elem	*pop_elem(t_elem **stack)
 	elem = *stack;
 	prev = elem->prev;
 	next = elem->next;
-
 	prev->next = next;
 	next->prev = prev;
-
 	if (elem->is_end != true)
 		*stack = next;
 	else

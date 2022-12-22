@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 21:50:31 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 12:48:58 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 08:52:29 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -68,7 +68,6 @@ void	calc_longest_increasing_subsequence(t_info *info)
 	{
 		next->need_sort = true;
 		info->need_sort_count += 1;
-
 		next->lis = false;
 		next->lis_len = calc_elem_lis_count(next);
 		if (next->lis_len > info->lis_head->lis_len)

@@ -12,7 +12,8 @@
 
 SRCS_DIR	:= src/
 SRCS	:= push_swap.c \
-			ops.c \
+			push_swap_ops.c \
+			rotate_ops.c \
 			clean_exit.c \
 			stack_utils.c \
 			stack_ops.c \
@@ -23,7 +24,7 @@ SRCS	:= push_swap.c \
 			push_backto_a.c \
 			ops_compression.c \
 			calc_longest_increasing_subseq.c \
-			ops_utils.c \
+			read_inputs.c \
 			sort_few.c
 
 SRCS	:= $(addprefix $(SRCS_DIR), $(SRCS))

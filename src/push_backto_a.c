@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 21:47:21 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 12:33:48 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 08:53:14 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -76,22 +76,22 @@ size_t	calc_dest_index_b(t_info *info, t_elem *to, t_elem *elem)
 	return (calc_pos_bigger_b(info, to, elem));
 }
 
-void	calc_cost_b(t_cost *cost, t_elem *elem, t_info *info)
+void	calc_cost_b(t_cost *cost, t_elem *elem, t_info *i)
 {
 	size_t	index;
 	size_t	to_pos;
 	t_cost	cost_tmp;
 
 	cost_tmp = (t_cost){0};
-	index = index_of_stack(info->stack_b, elem->num);
+	index = index_of_stack(i->stack_b, elem->num);
 	cost_tmp.ra = index;
-	cost_tmp.rra = stacklen(info->stack_b) - index;
-	if (info->stack_a == NULL)
+	cost_tmp.rra = stacklen(i->stack_b) - index;
+	if (i->stack_a == NULL)
 		to_pos = 0;
 	else
-		to_pos = calc_dest_index_b(info, info->stack_a, elem) % stacklen(info->stack_a);
+		to_pos = calc_dest_index_b(i, i->stack_a, elem) % stacklen(i->stack_a);
 	cost_tmp.rb = to_pos;
-	cost_tmp.rrb = stacklen(info->stack_a) - to_pos;
+	cost_tmp.rrb = stacklen(i->stack_a) - to_pos;
 	cost_tmp.cost = calc_min_cost(&cost_tmp);
 	if (cost_tmp.cost < cost->cost)
 		copy_cost(cost, &cost_tmp);
@@ -109,7 +109,7 @@ void	move_elem_b(t_info *info, t_elem *from)
 	{
 		calc_cost_b(&cost, tmp, info);
 		if (tmp->is_end == true)
-			break;
+			break ;
 		tmp = tmp->next;
 	}
 	do_move_elem_b(info, &cost);

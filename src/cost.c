@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/04 16:47:03 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/16 22:28:11 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 08:52:38 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -19,7 +19,7 @@ void	calc_min_cost_tool(t_cost *c)
 		c->rra = 0;
 		c->rb = 0;
 	}
-    else
+	else
 	{
 		c->ra = 0;
 		c->rrb = 0;

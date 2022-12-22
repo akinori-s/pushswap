@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 21:48:47 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/16 21:52:58 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 09:06:08 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -146,7 +146,7 @@ void	compress_ops(t_info *info)
 		}
 		if (tmp != NULL)
 		{
-			if (join_rotates(info, i, j) == 1 || join_rev_rotates(info, i, j) == 1)
+			if (join_rotates(info, i, j) || join_rev_rotates(info, i, j))
 			{
 				tmp = info->ops;
 				i = 0;
