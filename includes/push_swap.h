@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/22 09:43:39 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 20:22:07 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -86,6 +86,8 @@ void	clean_exit(t_info *info, int exit_code);
 t_elem	*new_elem(long num);
 size_t	index_of_stack(t_elem *stack, long num);
 size_t	stacklen(t_elem *stack);
+
+// stack_utils2.c
 long	stackmaxnum(t_elem *stack);
 long	stackminnum(t_elem *stack);
 
@@ -98,21 +100,13 @@ void	map_sorted_to_stack(t_elem *sorted, t_elem *stack, size_t sorted_len);
 
 // stack_ops.c
 void	swap(t_elem **stack);
-void	elem_add_back(t_elem *new, t_elem **stack);
-void	elem_add_front(t_elem *new, t_elem **stack);
 t_elem	*pop_elem(t_elem **stack);
 void	rotate_stack(t_elem **stack);
 void	rev_rotate_stack(t_elem **stack);
 
-// printers.c
-void	print_stack_elem(t_elem *stack);
-void	print_elem(t_elem *elem);
-void	print_stack(t_elem *stack, bool extra);
-void	print_best_cost(t_cost *cost);
-void	print_stacks(t_elem *stack_a, t_elem *stack_b, bool extra);
-void	print_calc_cost(t_cost *cost, long num, long pos, bool is_b);
-void	print_ops_debug(t_list *lst, bool debug);
-void	print_lis(t_elem *lst);
+// stack_ops2.c
+void	elem_add_back(t_elem *new, t_elem **stack);
+void	elem_add_front(t_elem *new, t_elem **stack);
 
 // math_utils.c
 size_t	min_st(size_t a, size_t b);
@@ -120,13 +114,6 @@ size_t	max_st(size_t a, size_t b);
 long	abs_long(long a);
 long	min_long(long a, long b);
 long	max_long(long a, long b);
-
-// stack_ops.c
-void	swap(t_elem **stack);
-void	elem_add_front(t_elem *new, t_elem **stack);
-t_elem	*pop_elem(t_elem **stack);
-void	rotate_stack(t_elem **stack);
-void	rev_rotate_stack(t_elem **stack);
 
 // cost.c
 void	calc_min_cost_tool(t_cost *c);
