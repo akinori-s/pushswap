@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/18 21:38:28 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/22 21:47:07 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 22:15:47 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -87,7 +87,8 @@ int	main(int argc, char **argv)
 		return (0);
 	inputs_to_stack(&info, &(info.stack_a), argc, argv);
 	inputs_to_stack(&info, &(info.stack_t), argc, argv);
-	sort_tmp_stack(info.stack_t);
+	if (sort_tmp_stack(info.stack_t) == -1)
+		clean_exit(&info, ERROR);
 	if (check_duplicates(info.stack_t))
 		clean_exit(&info, PS_ERROR);
 	read_ops(&info);

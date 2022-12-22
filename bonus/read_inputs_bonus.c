@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/19 23:04:42 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/22 21:42:58 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 22:14:34 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -51,7 +51,7 @@ void	read_ops(t_info *info)
 			clean_exit(info, PS_ERROR);
 		elem = ft_lstnew(str);
 		if (elem == NULL)
-			clean_exit(info, 0);
+			clean_exit(info, ERROR);
 		ft_lstadd_back(&(info->ops), elem);
 		str = get_next_line(STDIN);
 	}

@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/22 21:21:47 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 22:12:54 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -39,7 +39,8 @@ void	prep_push_swap(t_info *info, int argc, char **argv)
 {
 	inputs_to_stack(info, &(info->stack_a), argc, argv);
 	inputs_to_stack(info, &(info->stack_t), argc, argv);
-	sort_tmp_stack(info->stack_t);
+	if (sort_tmp_stack(info->stack_t) == -1)
+		clean_exit(info, ERROR);
 	get_stack_info(info);
 	map_sorted_to_stack(info->stack_t, info->stack_a, stacklen(info->stack_t));
 }
@@ -81,11 +82,11 @@ int	main(int argc, char **argv)
 		return (0);
 	prep_push_swap(&info, argc, argv);
 	if (argc - 1 <= 1)
-		return (0);
+		clean_exit(&info, 0);
 	if (check_duplicates(info.stack_t))
 		clean_exit(&info, PS_ERROR);
 	if (is_sorted(info.stack_a))
-		return (0);
+		clean_exit(&info, 0);
 	if (argc - 1 <= 6)
 		sort_few(&info, argc - 1);
 	else
