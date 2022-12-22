@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/27 16:08:59 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/18 15:19:16 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 09:43:36 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -127,7 +127,7 @@ void	print_calc_cost(t_cost *cost, long num, long pos, bool is_b)
 	}
 }
 
-void	print_ops(t_list *lst, bool debug)
+void	print_ops_debug(t_list *lst, bool debug)
 {
 	t_list	*tmp;
 	size_t	i;

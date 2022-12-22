@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:43:44 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/22 08:45:58 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 09:45:49 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -35,66 +35,41 @@ void	get_stack_info(t_info *info)
 	info->stack_t_len = stack_len;
 }
 
-void	quick_sort_1(t_info *info, size_t ax1_pos, size_t ax2_pos)
+void	prep_push_swap(t_info *info, int argc, char **argv)
 {
-	t_elem	*tmp;
-	size_t	stack_len;
-	size_t	i;
-
-	stack_len = stacklen(info->stack_a);
-	tmp = info->stack_a;
-	i = 0;
-	while (i < stack_len)
-	{
-		while (!tmp->need_sort && i++ < stack_len)
-		{
-			op_ra(info);
-			tmp = info->stack_a;
-		}
-		if (tmp->pos >= ax1_pos)
-		{
-			op_pb(info);
-			if (tmp->pos > ax2_pos)
-				op_rb(info);
-		}
-		else
-			op_ra(info);
-		tmp = info->stack_a;
-		i++;
-	}
+	inputs_to_stack(info, &(info->stack_a), argc, argv);
+	inputs_to_stack(info, &(info->stack_t), argc, argv);
+	sort_tmp_stack(info->stack_t);
+	get_stack_info(info);
+	map_sorted_to_stack(info->stack_t, info->stack_a, stacklen(info->stack_t));
 }
 
-void	quick_sort_to_b(t_info *info)
+void	print_ops(t_list *lst)
 {
-	size_t	q1;
-	size_t	q2;
-	size_t	q3;
-
-	q1 = info->stack_t_len / 4;
-	q2 = info->stack_t_len / 4 * 2;
-	q3 = info->stack_t_len / 4 * 3;
-	quick_sort_1(info, q2, q3);
-	quick_sort_1(info, 0, q1);
-}
-
-void	push_n_swap(t_info *info)
-{
-	size_t	ra;
-	size_t	rra;
-
-	quick_sort_to_b(info);
-	while (info->stack_b != NULL)
+	while (lst != NULL)
 	{
-		move_elem_b(info, info->stack_b);
+		if (*(int *)(lst->content) == OP_SA)
+			ft_printf("sa\n");
+		if (*(int *)(lst->content) == OP_SB)
+			ft_printf("sb\n");
+		if (*(int *)(lst->content) == OP_PA)
+			ft_printf("pa\n");
+		if (*(int *)(lst->content) == OP_PB)
+			ft_printf("pb\n");
+		if (*(int *)(lst->content) == OP_RA)
+			ft_printf("ra\n");
+		if (*(int *)(lst->content) == OP_RB)
+			ft_printf("rb\n");
+		if (*(int *)(lst->content) == OP_RR)
+			ft_printf("rr\n");
+		if (*(int *)(lst->content) == OP_RRA)
+			ft_printf("rra\n");
+		if (*(int *)(lst->content) == OP_RRB)
+			ft_printf("rrb\n");
+		if (*(int *)(lst->content) == OP_RRR)
+			ft_printf("rrr\n");
+		lst = lst->next;
 	}
-	ra = index_of_stack(info->stack_a, stackminnum(info->stack_a));
-	rra = stacklen(info->stack_a) - ra;
-	if (ra > rra)
-		while (rra-- > 0)
-			op_rra(info);
-	else
-		while (ra-- > 0)
-			op_ra(info);
 }
 
 int	main(int argc, char **argv)
@@ -104,11 +79,7 @@ int	main(int argc, char **argv)
 	info = (t_info){0};
 	if (argc - 1 <= 0)
 		return (0);
-	inputs_to_stack(&info, &(info.stack_a), argc, argv);
-	inputs_to_stack(&info, &(info.stack_t), argc, argv);
-	sort_tmp_stack(info.stack_t);
-	get_stack_info(&info);
-	map_sorted_to_stack(info.stack_t, info.stack_a, stacklen(info.stack_t));
+	prep_push_swap(&info, argc, argv);
 	if (argc - 1 <= 1)
 		return (0);
 	if (check_duplicates(info.stack_t))
@@ -122,8 +93,8 @@ int	main(int argc, char **argv)
 		calc_longest_increasing_subsequence(&info);
 		push_n_swap(&info);
 	}
-	compress_ops(&info);
-	print_ops(info.ops, false);
+	compress_ops(&info, 0);
+	print_ops(info.ops);
 	clean_exit(&info, 0);
 	return (0);
 }

@@ -6,35 +6,33 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/12/16 21:48:47 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/22 09:06:08 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 09:37:02 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
 #include "push_swap.h"
 
-void	join_rr(t_info *info, size_t i, size_t n)
+void	join_rr(t_info *info, size_t i, size_t n, size_t rra)
 {
 	t_list	*tmp;
-	size_t	rra;
 	size_t	rrb;
 
 	tmp = info->ops;
-	rra = 0;
 	while (rra++ < i)
 		tmp = tmp->next;
 	rra = 0;
 	rrb = 0;
 	while ((rra < n || rrb < n) && tmp != NULL)
 	{
-		if (*(int*)tmp->content == OP_RRA && rra < n)
+		if (*(int *)tmp->content == OP_RRA && rra < n)
 		{
-			*(int*)tmp->content = OP_RRR;
+			*(int *)tmp->content = OP_RRR;
 			rra++;
 			tmp = tmp->next;
 		}
-		else if (*(int*)tmp->content == OP_RRB && rrb < n)
+		else if (*(int *)tmp->content == OP_RRB && rrb < n)
 		{
-			*(int*)tmp->content = OP_NONE;
+			*(int *)tmp->content = OP_NONE;
 			rrb++;
 		}
 		else
@@ -42,29 +40,27 @@ void	join_rr(t_info *info, size_t i, size_t n)
 	}
 }
 
-void	join_r(t_info *info, size_t i, size_t n)
+void	join_r(t_info *info, size_t i, size_t n, size_t ra)
 {
 	t_list	*tmp;
-	size_t	ra;
 	size_t	rb;
 
 	tmp = info->ops;
-	ra = 0;
 	while (ra++ < i)
 		tmp = tmp->next;
 	ra = 0;
 	rb = 0;
 	while ((ra < n || rb < n) && tmp != NULL)
 	{
-		if (*(int*)tmp->content == OP_RA && ra < n)
+		if (*(int *)tmp->content == OP_RA && ra < n)
 		{
-			*(int*)tmp->content = OP_RR;
+			*(int *)tmp->content = OP_RR;
 			ra++;
 			tmp = tmp->next;
 		}
-		else if (*(int*)tmp->content == OP_RB && rb < n)
+		else if (*(int *)tmp->content == OP_RB && rb < n)
 		{
-			*(int*)tmp->content = OP_NONE;
+			*(int *)tmp->content = OP_NONE;
 			rb++;
 		}
 		else
@@ -88,15 +84,15 @@ int	join_rev_rotates(t_info *info, size_t i, size_t j)
 	t = 0;
 	while (t++ < j)
 	{
-		if (*(int*)tmp->content == OP_RRA)
+		if (*(int *)tmp->content == OP_RRA)
 			rra++;
-		else if (*(int*)tmp->content == OP_RRB)
+		else if (*(int *)tmp->content == OP_RRB)
 			rrb++;
 		tmp = tmp->next;
 	}
 	if (min_st(rra, rrb) == 0)
 		return (0);
-	join_rr(info, i, min_st(rra, rrb));
+	join_rr(info, i, min_st(rra, rrb), 0);
 	return (1);
 }
 
@@ -116,30 +112,28 @@ int	join_rotates(t_info *info, size_t i, size_t j)
 	t = 0;
 	while (t++ < j)
 	{
-		if (*(int*)tmp->content == OP_RA)
+		if (*(int *)tmp->content == OP_RA)
 			ra++;
-		else if (*(int*)tmp->content == OP_RB)
+		else if (*(int *)tmp->content == OP_RB)
 			rb++;
 		tmp = tmp->next;
 	}
 	if (min_st(ra, rb) == 0)
 		return (0);
-	join_r(info, i, min_st(ra, rb));
+	join_r(info, i, min_st(ra, rb), 0);
 	return (1);
 }
 
-void	compress_ops(t_info *info)
+void	compress_ops(t_info *info, size_t i)
 {
-	size_t	i;
 	size_t	j;
 	t_list	*tmp;
 
-	i = 0;
 	tmp = info->ops;
 	while (tmp != NULL)
 	{
 		j = 0;
-		while (tmp != NULL && (*(int*)tmp->content) >= OP_RA)
+		while (tmp != NULL && (*(int *)tmp->content) >= OP_RA)
 		{
 			j++;
 			tmp = tmp->next;

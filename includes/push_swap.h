@@ -6,7 +6,7 @@
 /*   By: asasada <asasada@student.42tokyo.j>        +#+  +:+       +#+        */
 /*                                                +#+#+#+#+#+   +#+           */
 /*   Created: 2022/11/23 13:44:30 by asasada           #+#    #+#             */
-/*   Updated: 2022/12/22 08:47:55 by asasada          ###   ########.fr       */
+/*   Updated: 2022/12/22 09:43:39 by asasada          ###   ########.fr       */
 /*                                                                            */
 /* ************************************************************************** */
 
@@ -111,7 +111,7 @@ void	print_stack(t_elem *stack, bool extra);
 void	print_best_cost(t_cost *cost);
 void	print_stacks(t_elem *stack_a, t_elem *stack_b, bool extra);
 void	print_calc_cost(t_cost *cost, long num, long pos, bool is_b);
-void	print_ops(t_list *lst, bool debug);
+void	print_ops_debug(t_list *lst, bool debug);
 void	print_lis(t_elem *lst);
 
 // math_utils.c
@@ -141,11 +141,11 @@ void	calc_cost_b(t_cost *cost, t_elem *elem, t_info *info);
 void	move_elem_b(t_info *info, t_elem *from);
 
 // ops_compression.c
-void	join_rr(t_info *info, size_t i, size_t n);
-void	join_r(t_info *info, size_t i, size_t n);
+void	join_rr(t_info *info, size_t i, size_t n, size_t rra);
+void	join_r(t_info *info, size_t i, size_t n, size_t ra);
 int		join_rev_rotates(t_info *info, size_t i, size_t j);
 int		join_rotates(t_info *info, size_t i, size_t j);
-void	compress_ops(t_info *info);
+void	compress_ops(t_info *info, size_t i);
 
 // calc_longest_increasing_subseq.c
 void	mark_lis_elems(t_elem *elem, t_info *info);
@@ -177,5 +177,10 @@ void	op_ra(t_info *info);
 void	op_rb(t_info *info);
 void	op_rra(t_info *info);
 void	op_rrb(t_info *info);
+
+// quick_sort.c
+void	quick_sort_1(t_info *info, size_t ax1_pos, size_t ax2_pos);
+void	quick_sort_to_b(t_info *info);
+void	push_n_swap(t_info *info);
 
 #endif
